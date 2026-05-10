@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MaWa Planner | Aya Gaber</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=El+Messiri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-light: #c49a7c;
+            --accent-blue: #7eb8c9;
+            --accent-gold: #d4a853;
+            --bg-light: #faf7f2;
+            --bg-dark: #0f0d0a;
+            --glass-light: rgba(255, 252, 248, 0.65);
+            --glass-dark: rgba(20, 16, 12, 0.75);
+            --navy: #1a2744;
+            --deep-brown: #3e2f24;
+        }
+
+        * { font-family: 'Cairo', sans-serif; scroll-behavior: smooth; }
+        
+        body {
+            margin: 0;
+            background: linear-gradient(135deg, #faf7f2 0%, #f0e8dd 30%, #e8dff5 60%, #faf7f2 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            transition: all 0.6s ease;
+            overflow-x: hidden;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, #0f0d0a 0%, #1a1612 25%, #0d1a2d 50%, #1a1410 75%, #0f0d0a 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            color: #f0e7dc;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* تأثير اسم MaWa المتوهج */
+        .brand-name {
+            font-family: 'El Messiri', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #c49a7c, #d4a853, #c49a7c, #7eb8c9);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s ease-in-out infinite;
+            text-shadow: none;
+            filter: drop-shadow(0 0 15px rgba(196, 154, 124, 0.5));
+        }
+
+        body.dark-mode .brand-name {
+            background: linear-gradient(135deg, #d4a853, #f0d78c, #c49a7c, #b8946e);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            filter: drop-shadow(0 0 20px rgba(212, 168, 83, 0.7));
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* زجاج محسن */
+        .glass-card {
+            background: var(--glass-light);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 28px;
+            box-shadow: 0 15px 45px rgba(160, 130, 100, 0.12), 0 0 0 1px rgba(255,255,255,0.3) inset;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body.dark-mode .glass-card {
+            background: rgba(20, 16, 12, 0.7);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(212, 168, 83, 0.25);
+            box-shadow: 0 15px 45px rgba(0,0,0,0.5), 0 0 0 1px rgba(212,168,83,0.1) inset;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 25px 60px rgba(160, 130, 100, 0.2);
+        }
+
+        body.dark-mode .glass-card:hover {
+            box-shadow: 0 25px 60px rgba(212, 168, 83, 0.2);
+        }
+
+        /* أزرار */
+        .btn-glow {
+            background: linear-gradient(135deg, #c49a7c, #b08975);
+            color: white;
+            padding: 12px 28px;
+            border-radius: 18px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 8px 25px rgba(180, 130, 100, 0.35);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-glow::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .btn-glow:hover::after { opacity: 1; }
+        .btn-glow:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(180, 130, 100, 0.5); }
+        .btn-glow:active { transform: scale(0.95); }
+
+        body.dark-mode .btn-glow {
+            background: linear-gradient(135deg, #d4a853, #b8943e);
+            box-shadow: 0 8px 25px rgba(212, 168, 83, 0.4);
+        }
+
+        /* كروت البلانر */
+        .planner-card {
+            cursor: pointer;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+        }
+
+        .planner-card::before {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            width: 300%;
+            height: 300%;
+            background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 60%);
+            transition: all 0.6s;
+            opacity: 0;
+        }
+
+        .planner-card:hover::before {
+            top: -50%;
+            left: -50%;
+            opacity: 1;
+        }
+
+        .planner-card:active { transform: scale(0.94); }
+
+        /* فقاعات */
+        .bubble {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            animation: floatBubble 10s infinite ease-in-out;
+            background: radial-gradient(circle at 30% 30%, rgba(200,180,210,0.5), rgba(180,200,220,0.15));
+            box-shadow: 0 8px 25px rgba(150,160,200,0.2);
+        }
+
+        body.dark-mode .bubble {
+            background: radial-gradient(circle at 30% 30%, rgba(212,168,83,0.25), rgba(30,40,60,0.1));
+            box-shadow: 0 8px 25px rgba(212,168,83,0.15);
+        }
+
+        @keyframes floatBubble {
+            0%, 100% { transform: translateY(0) translateX(0) scale(1); opacity: 0.5; }
+            25% { transform: translateY(-30px) translateX(20px) scale(1.1); opacity: 0.8; }
+            50% { transform: translateY(-15px) translateX(-15px) scale(0.9); opacity: 0.6; }
+            75% { transform: translateY(-40px) translateX(10px) scale(1.05); opacity: 0.7; }
+        }
+
+        /* نجوم */
+        .star-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            animation: twinkleStar 3s infinite alternate;
+        }
+
+        @keyframes twinkleStar {
+            0% { opacity: 0.2; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.4); }
+        }
+
+        /* سكرول بار */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(220,210,200,0.3); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #c49a7c, #7eb8c9); border-radius: 10px; }
+        body.dark-mode ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #d4a853, #1a2744); }
+
+        /* مودال */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(6px);
+            z-index: 1000; display: flex; align-items: center; justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .slide-up { animation: slideUp 0.5s ease forwards; }
+
+        /* Progress */
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // ============ المكونات الأساسية ============
+
+        // الفقاعات المتحركة
+        const FloatingBubbles = () => {
+            const bubbles = Array.from({ length: 20 }, (_, i) => ({
+                id: i,
+                size: Math.random() * 80 + 30,
+                left: Math.random() * 100,
+                top: Math.random() * 100,
+                delay: Math.random() * 10,
+                duration: Math.random() * 8 + 8,
+            }));
+
+            return (
+                <div style={{position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 0}}>
+                    {bubbles.map(b => (
+                        <div key={b.id} className="bubble" style={{
+                            width: b.size + 'px', height: b.size + 'px',
+                            left: b.left + '%', top: b.top + '%',
+                            animationDelay: b.delay + 's',
+                            animationDuration: b.duration + 's',
+                        }} />
+                    ))}
+                </div>
+            );
+        };
+
+        // النجوم للمود المظلم
+        const TwinklingStars = () => {
+            const stars = Array.from({ length: 60 }, (_, i) => ({
+                id: i,
+                top: Math.random() * 100,
+                left: Math.random() * 100,
+                size: Math.random() * 4 + 1,
+                delay: Math.random() * 3,
+            }));
+
+            return (
+                <div style={{position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 0, opacity: 0}} id="stars-layer">
+                    {stars.map(s => (
+                        <div key={s.id} className="star-particle" style={{
+                            top: s.top + '%', left: s.left + '%',
+                            width: s.size + 'px', height: s.size + 'px',
+                            background: '#fff', borderRadius: '50%',
+                            animationDelay: s.delay + 's',
+                            boxShadow: '0 0 ' + (s.size*3) + 'px ' + (s.size) + 'px rgba(255,255,255,0.8)',
+                        }} />
+                    ))}
+                </div>
+            );
+        };
+
+        // ============ الشات بوت ============
+        const ChatBot = () => {
+            const [isOpen, setIsOpen] = useState(false);
+            const [messages, setMessages] = useState([
+                { from: 'bot', text: '🌸 مرحبًا! أنا مساعدة MaWa، كيف أقدر أساعدك اليوم؟' }
+            ]);
+            const [input, setInput] = useState('');
+            const chatEndRef = useRef(null);
+
+            useEffect(() => {
+                chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+            }, [messages]);
+
+            const sendMessage = () => {
+                if (!input.trim()) return;
+                setMessages(prev => [...prev, { from: 'user', text: input }]);
+                setInput('');
+                
+                setTimeout(() => {
+                    const replies = [
+                        'أكيد! تقدر تتصفح كل أنواع البلانرز من القائمة الجانبية 📋',
+                        'عندنا بلانر يومي، أسبوعي، شهري، وحتى بلانر للميزانية 💰',
+                        'تقدر تحجز جلسة تخطيط شخصية مع Aya Gaber مباشرة 💫',
+                        'كل البلانرز تفاعلية وتقدر تطبعها أو تستخدمها أونلاين 🎨',
+                        'في خصم 20% على الباقة الشهرية لفترة محدودة! 🌟',
+                    ];
+                    setMessages(prev => [...prev, { from: 'bot', text: replies[Math.floor(Math.random() * replies.length)] }]);
+                }, 600);
+            };
+
+            return (
+                <>
+                    <button onClick={() => setIsOpen(!isOpen)} 
+                        className="fixed bottom-6 left-6 z-50 w-16 h-16 rounded-full bg-gradient-to-br from-pink-400 to-amber-300 text-white text-2xl shadow-2xl flex items-center justify-center"
+                        style={{animation: 'pulse-glow 2s infinite', border: 'none', cursor: 'pointer'}}>
+                        💬
+                    </button>
+                    
+                    {isOpen && (
+                        <div className="fixed bottom-24 left-6 z-50 w-80 glass-card p-4 max-h-96 overflow-y-auto slide-up">
+                            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px'}}>
+                                <span style={{fontWeight: 'bold', fontSize: '16px'}}>💬 دردشة MaWa</span>
+                                <button onClick={() => setIsOpen(false)} style={{background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer'}}>✕</button>
+                            </div>
+                            <div style={{display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '12px'}}>
+                                {messages.map((m, i) => (
+                                    <div key={i} style={{
+                                        padding: '10px 14px', borderRadius: '16px', fontSize: '13px',
+                                        maxWidth: '85%',
+                                        alignSelf: m.from === 'bot' ? 'flex-start' : 'flex-end',
+                                        background: m.from === 'bot' ? 'rgba(240, 224, 208, 0.7)' : '#c49a7c',
+                                        color: m.from === 'bot' ? '#3e362e' : '#fff',
+                                    }}>{m.text}</div>
+                                ))}
+                                <div ref={chatEndRef} />
+                            </div>
+                            <div style={{display: 'flex', gap: '8px'}}>
+                                <input value={input} onChange={e => setInput(e.target.value)}
+                                    onKeyPress={e => e.key === 'Enter' && sendMessage()}
+                                    placeholder="اكتبي رسالتك..."
+                                    style={{flex: 1, padding: '10px', borderRadius: '14px', border: '1px solid #ddd', background: 'rgba(255,255,255,0.5)', fontSize: '14px'}} />
+                                <button onClick={sendMessage} className="btn-glow" style={{padding: '10px 18px', fontSize: '14px'}}>إرسال</button>
+                            </div>
+                        </div>
+                    )}
+                </>
+            );
+        };
+
+        // ============ مودال الحجز والدفع ============
+        const BookingModal = ({ isOpen, onClose }) => {
+            const [step, setStep] = useState(1);
+            const [form, setForm] = useState({ plan: '', date: '', time: '', name: '', email: '', phone: '' });
+
+            if (!isOpen) return null;
+
+            const plans = [
+                { name: '📋 بلانر رقمي مخصص', price: '150 جنيه', delivery: 'فوري' },
+                { name: '📓 نوت بوك ورقي فاخر', price: '280 جنيه', delivery: '3-5 أيام' },
+                { name: '💫 جلسة تخطيط شخصية', price: '200 جنيه', delivery: '45 دقيقة' },
+                { name: '🌟 الباقة الشاملة', price: '450 جنيه', delivery: 'بلانر + جلسة' },
+            ];
+
+            return (
+                <div className="modal-overlay" onClick={onClose}>
+                    <div className="glass-card p-6 w-11/12 max-w-lg max-h-[85vh] overflow-y-auto slide-up" onClick={e => e.stopPropagation()}>
+                        <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '16px'}}>
+                            <h3 style={{fontSize: '22px', fontWeight: 'bold'}}>📅 احجزِ خدمتك</h3>
+                            <button onClick={onClose} style={{background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer'}}>✕</button>
+                        </div>
+
+                        {/* Steps indicator */}
+                        <div style={{display: 'flex', gap: '8px', marginBottom: '20px', justifyContent: 'center'}}>
+                            {[1,2,3,4].map(s => (
+                                <div key={s} style={{
+                                    width: '30px', height: '30px', borderRadius: '50%',
+                                    background: step >= s ? '#c49a7c' : '#e0d5c8',
+                                    color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                    fontSize: '14px', fontWeight: 'bold', transition: 'all 0.3s'
+                                }}>{s}</div>
+                            ))}
+                        </div>
+
+                        {step === 1 && (
+                            <div>
+                                <p style={{marginBottom: '12px', opacity: 0.8}}>اخترِ الخدمة اللي تناسبك:</p>
+                                {plans.map((p, i) => (
+                                    <div key={i} onClick={() => { setForm({...form, plan: p.name}); setStep(2); }}
+                                        className="glass-card" style={{padding: '14px', marginBottom: '10px', cursor: 'pointer'}}>
+                                        <div style={{fontWeight: 'bold', fontSize: '15px'}}>{p.name}</div>
+                                        <div style={{fontSize: '13px', opacity: 0.7}}>{p.price} • {p.delivery}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
+                        {step === 2 && (
+                            <div>
+                                <label style={{display: 'block', marginBottom: '8px'}}>📅 اختر التاريخ:</label>
+                                <input type="date" value={form.date} onChange={e => setForm({...form, date: e.target.value})}
+                                    style={{width: '100%', padding: '12px', borderRadius: '14px', border: '1px solid #ddd', marginBottom: '12px', background: 'rgba(255,255,255,0.5)'}} />
+                                <label style={{display: 'block', marginBottom: '8px'}}>⏰ اختر الوقت:</label>
+                                <input type="time" value={form.time} onChange={e => setForm({...form, time: e.target.value})}
+                                    style={{width: '100%', padding: '12px', borderRadius: '14px', border: '1px solid #ddd', marginBottom: '12px', background: 'rgba(255,255,255,0.5)'}} />
+                                <button onClick={() => setStep(3)} disabled={!form.date || !form.time} className="btn-glow" style={{width: '100%'}}>التالي ←</button>
+                            </div>
+                        )}
+
+                        {step === 3 && (
+                            <div>
+                                <input placeholder="الاسم الكريم" value={form.name} onChange={e => setForm({...form, name: e.target.value})}
+                                    style={{width: '100%', padding: '12px', borderRadius: '14px', border: '1px solid #ddd', marginBottom: '10px', background: 'rgba(255,255,255,0.5)'}} />
+                                <input placeholder="البريد الإلكتروني" value={form.email} onChange={e => setForm({...form, email: e.target.value})}
+                                    style={{width: '100%', padding: '12px', borderRadius: '14px', border: '1px solid #ddd', marginBottom: '10px', background: 'rgba(255,255,255,0.5)'}} />
+                                <input placeholder="رقم الهاتف" value={form.phone} onChange={e => setForm({...form, phone: e.target.value})}
+                                    style={{width: '100%', padding: '12px', borderRadius: '14px', border: '1px solid #ddd', marginBottom: '10px', background: 'rgba(255,255,255,0.5)'}} />
+                                <button onClick={() => setStep(4)} disabled={!form.name || !form.email} className="btn-glow" style={{width: '100%'}}>التالي ←</button>
+                            </div>
+                        )}
+
+                        {step === 4 && (
+                            <div style={{textAlign: 'center'}}>
+                                <div style={{fontSize: '50px', marginBottom: '12px'}}>💳</div>
+                                <h4 style={{fontWeight: 'bold', marginBottom: '12px'}}>ملخص الطلب</h4>
+                                <div className="glass-card" style={{padding: '14px', marginBottom: '16px', textAlign: 'right', fontSize: '14px'}}>
+                                    <p><strong>الخدمة:</strong> {form.plan}</p>
+                                    <p><strong>التاريخ:</strong> {form.date} | {form.time}</p>
+                                    <p><strong>الاسم:</strong> {form.name}</p>
+                                    <p><strong>البريد:</strong> {form.email}</p>
+                                </div>
+                                <p style={{fontSize: '12px', opacity: 0.7, marginBottom: '16px'}}>سيتم تحويلك لبوابة الدفع الآمن</p>
+                                <button onClick={() => { alert('✨ تم تأكيد حجزك! شكرًا لثقتك في MaWa Planner 🌸'); onClose(); }} className="btn-glow" style={{width: '100%', fontSize: '16px'}}>
+                                    💰 تأكيد ودفع
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        };
+
+        // ============ التطبيق الرئيسي ============
+        function App() {
+            const [darkMode, setDarkMode] = useState(false);
+            const [activeSection, setActiveSection] = useState('planners');
+            const [showBooking, setShowBooking] = useState(false);
+            const [tasks, setTasks] = useState([
+                { id: 1, text: 'مراجعة محاضرة الرياضيات', done: false, priority: 'عالي', category: 'دراسة' },
+                { id: 2, text: 'قراءة 30 صفحة من الكتاب', done: false, priority: 'متوسط', category: 'قراءة' },
+                { id: 3, text: 'تمرين الصباح', done: true, priority: 'منخفض', category: 'صحة' },
+                { id: 4, text: 'تخطيط الأسبوع القادم', done: false, priority: 'عالي', category: 'تنظيم' },
+                { id: 5, text: 'مراجعة الميزانية الشهرية', done: false, priority: 'متوسط', category: 'مالية' },
+            ]);
+            const [newTask, setNewTask] = useState('');
+            const [pomodoroTime, setPomodoroTime] = useState(1500);
+            const [isRunning, setIsRunning] = useState(false);
+            const timerRef = useRef(null);
+
+            useEffect(() => {
+                document.body.classList.toggle('dark-mode', darkMode);
+                const starsLayer = document.getElementById('stars-layer');
+                if (starsLayer) starsLayer.style.opacity = darkMode ? '1' : '0';
+            }, [darkMode]);
+
+            useEffect(() => {
+                if (isRunning && pomodoroTime > 0) {
+                    timerRef.current = setInterval(() => setPomodoroTime(t => t - 1), 1000);
+                } else if (pomodoroTime === 0) {
+                    setIsRunning(false);
+                    setPomodoroTime(1500);
+                    alert('🍅 الجلسة انتهت! استريحي 5 دقائق.');
+                }
+                return () => clearInterval(timerRef.current);
+            }, [isRunning, pomodoroTime]);
+
+            const addTask = () => {
+                if (!newTask.trim()) return;
+                setTasks([{ id: Date.now(), text: newTask, done: false, priority: 'متوسط', category: 'عام' }, ...tasks]);
+                setNewTask('');
+            };
+
+            const toggleTask = (id) => setTasks(tasks.map(t => t.id === id ? {...t, done: !t.done} : t));
+            const deleteTask = (id) => setTasks(tasks.filter(t => t.id !== id));
+
+            const planners = [
+                { id: 'daily', name: 'يومي', icon: '📋', desc: 'تخطيط يومك بالتفصيل' },
+                { id: 'weekly', name: 'أسبوعي', icon: '📅', desc: 'رؤية أسبوعية شاملة' },
+                { id: 'monthly', name: 'شهري', icon: '🗓️', desc: 'أهداف الشهر كاملة' },
+                { id: 'semester', name: 'فصل دراسي', icon: '🎓', desc: 'خطة الترم' },
+                { id: 'exam', name: 'امتحانات', icon: '📝', desc: 'جدول المراجعة' },
+                { id: 'goals', name: 'أهداف سنوية', icon: '🎯', desc: 'تتبع الأهداف' },
+                { id: 'habits', name: 'عادات', icon: '🔄', desc: 'بناء الروتين' },
+                { id: 'pomodoro', name: 'بومودورو', icon: '🍅', desc: 'التركيز العميق' },
+                { id: 'reading', name: 'قراءة', icon: '📚', desc: 'قائمة الكتب' },
+                { id: 'fitness', name: 'لياقة', icon: '🏋️', desc: 'التمارين' },
+                { id: 'sleep', name: 'نوم', icon: '😴', desc: 'جودة النوم' },
+                { id: 'budget', name: 'ميزانية', icon: '💰', desc: 'الإدارة المالية' },
+                { id: 'selfcare', name: 'عناية ذاتية', icon: '💖', desc: 'الرعاية الشخصية' },
+                { id: 'mood', name: 'مزاج', icon: '🌈', desc: 'تتبع المشاعر' },
+                { id: 'revision', name: 'مراجعة', icon: '📖', desc: 'خطة المراجعة' },
+                { id: 'assignment', name: 'واجبات', icon: '📌', desc: 'التسليمات' },
+            ];
+
+            const notebooks = [
+                { id: 'dotted', name: 'نوت منقط', icon: '🔵', desc: 'Bullet Journal' },
+                { id: 'lined', name: 'نوت مسطر', icon: '📝', desc: 'للكتابة اليومية' },
+                { id: 'grid', name: 'نوت مربعات', icon: '📐', desc: 'للرسوم والجداول' },
+                { id: 'blank', name: 'نوت أبيض', icon: '⬜', desc: 'للرسم الحر' },
+                { id: 'planner', name: 'أجندة', icon: '📒', desc: 'تقويم سنوي' },
+            ];
+
+            const minutes = Math.floor(pomodoroTime / 60);
+            const seconds = pomodoroTime % 60;
+
+            return (
+                <div style={{minHeight: '100vh', position: 'relative', zIndex: 1}}>
+                    <FloatingBubbles />
+                    <TwinklingStars />
+
+                    {/* الهيدر */}
+                    <header className="glass-card" style={{margin: '12px', padding: '16px 20px', position: 'sticky', top: '12px', zIndex: 100}}>
+                        <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px'}}>
+                            <div style={{display: 'flex', alignItems: 'center', gap: '12px'}}>
+                                <div style={{
+                                    width: '50px', height: '50px', borderRadius: '50%',
+                                    background: 'linear-gradient(135deg, #c49a7c, #f0c8b0, #7eb8c9)',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                    fontSize: '24px', boxShadow: '0 8px 25px rgba(180,150,130,0.3)'
+                                }}>🌸</div>
+                                <div>
+                                    <h1 className="brand-name" style={{margin: 0, lineHeight: 1.2}}>MaWa Planner</h1>
+                                    <p style={{margin: 0, fontSize: '12px', opacity: 0.7}}>by Aya Gaber ✨</p>
+                                </div>
+                            </div>
+                            <div style={{display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap'}}>
+                                <span style={{background: 'rgba(240,216,200,0.7)', padding: '6px 14px', borderRadius: '20px', fontSize: '13px', fontWeight: '600'}}>🔥 17 يوم</span>
+                                <span style={{background: 'rgba(200,180,220,0.5)', padding: '6px 14px', borderRadius: '20px', fontSize: '13px', fontWeight: '600'}}>⭐ 3,240 XP</span>
+                                <button onClick={() => setShowBooking(true)} className="btn-glow" style={{padding: '10px 20px', fontSize: '14px'}}>📅 احجزِ الآن</button>
+                                <button onClick={() => setDarkMode(!darkMode)} style={{
+                                    width: '42px', height: '42px', borderRadius: '50%', border: 'none',
+                                    background: darkMode ? '#d4a853' : '#7eb8c9', color: 'white',
+                                    fontSize: '20px', cursor: 'pointer', boxShadow: '0 4px 15px rgba(0,0,0,0.2)'
+                                }}>{darkMode ? '☀️' : '🌙'}</button>
+                            </div>
+                        </div>
+                    </header>
+
+                    {/* Navigation Tabs */}
+                    <div style={{display: 'flex', gap: '8px', padding: '0 16px', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '12px'}}>
+                        {[
+                            { id: 'planners', name: '📋 البلانرز', icon: '📋' },
+                            { id: 'notebooks', name: '📓 النوت بوك', icon: '📓' },
+                            { id: 'tasks', name: '✅ المهام', icon: '✅' },
+                            { id: 'pomodoro', name: '🍅 بومودورو', icon: '🍅' },
+                            { id: 'stats', name: '📊 الإحصائيات', icon: '📊' },
+                        ].map(tab => (
+                            <button key={tab.id} onClick={() => setActiveSection(tab.id)}
+                                style={{
+                                    padding: '10px 20px', borderRadius: '18px', border: 'none', cursor: 'pointer',
+                                    fontWeight: '600', fontSize: '14px', transition: 'all 0.3s',
+                                    background: activeSection === tab.id ? '#c49a7c' : 'rgba(255,255,255,0.4)',
+                                    color: activeSection === tab.id ? 'white' : '#3e362e',
+                                    boxShadow: activeSection === tab.id ? '0 8px 25px rgba(180,130,100,0.3)' : 'none',
+                                }}>
+                                {tab.name}
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* المحتوى الرئيسي */}
+                    <div style={{padding: '0 16px', paddingBottom: '100px'}}>
+                        
+                        {/* البلانرز */}
+                        {activeSection === 'planners' && (
+                            <div className="glass-card slide-up" style={{padding: '24px'}}>
+                                <h2 style={{textAlign: 'center', marginBottom: '20px', fontSize: '24px'}}>📋 كل أنواع البلانرز</h2>
+                                <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '12px'}}>
+                                    {planners.map(p => (
+                                        <div key={p.id} className="planner-card glass-card" style={{
+                                            padding: '16px', textAlign: 'center', cursor: 'pointer',
+                                            background: 'rgba(255,255,255,0.4)'
+                                        }}>
+                                            <div style={{fontSize: '36px', marginBottom: '8px'}}>{p.icon}</div>
+                                            <div style={{fontWeight: 'bold', fontSize: '14px'}}>{p.name}</div>
+                                            <div style={{fontSize: '11px', opacity: 0.7}}>{p.desc}</div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* النوت بوك */}
+                        {activeSection === 'notebooks' && (
+                            <div className="glass-card slide-up" style={{padding: '24px'}}>
+                                <h2 style={{textAlign: 'center', marginBottom: '20px', fontSize: '24px'}}>📓 النوت بوك الفاخرة</h2>
+                                <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: '14px'}}>
+                                    {notebooks.map(n => (
+                                        <div key={n.id} className="planner-card glass-card" style={{
+                                            padding: '20px', textAlign: 'center',
+                                            background: 'linear-gradient(135deg, rgba(255,255,255,0.6), rgba(240,230,240,0.3))',
+                                        }}>
+                                            <div style={{fontSize: '40px', marginBottom: '10px'}}>{n.icon}</div>
+                                            <div style={{fontWeight: 'bold', fontSize: '15px'}}>{n.name}</div>
+                                            <div style={{fontSize: '12px', opacity: 0.7}}>{n.desc}</div>
+                                            <button className="btn-glow" style={{marginTop: '10px', padding: '8px 18px', fontSize: '12px'}}>تصفح</button>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* المهام */}
+                        {activeSection === 'tasks' && (
+                            <div className="glass-card slide-up" style={{padding: '24px'}}>
+                                <h2 style={{marginBottom: '16px'}}>✅ إدارة المهام</h2>
+                                <div style={{display: 'flex', gap: '10px', marginBottom: '16px'}}>
+                                    <input value={newTask} onChange={e => setNewTask(e.target.value)}
+                                        onKeyPress={e => e.key === 'Enter' && addTask()}
+                                        placeholder="✍️ اكتبي مهمة جديدة..."
+                                        style={{flex: 1, padding: '14px', borderRadius: '16px', border: '1px solid #ddd', fontSize: '15px', background: 'rgba(255,255,255,0.6)'}} />
+                                    <button onClick={addTask} className="btn-glow">➕ إضافة</button>
+                                </div>
+                                <div style={{display: 'flex', flexDirection: 'column', gap: '8px', maxHeight: '400px', overflowY: 'auto'}}>
+                                    {tasks.map(task => (
+                                        <div key={task.id} style={{
+                                            display: 'flex', alignItems: 'center', gap: '12px',
+                                            padding: '14px', borderRadius: '16px',
+                                            background: task.done ? 'rgba(220,210,200,0.5)' : 'rgba(255,255,255,0.6)',
+                                            opacity: task.done ? 0.7 : 1,
+                                            transition: 'all 0.3s',
+                                        }}>
+                                            <input type="checkbox" checked={task.done} onChange={() => toggleTask(task.id)}
+                                                style={{width: '22px', height: '22px', accentColor: '#c49a7c', cursor: 'pointer'}} />
+                                            <span style={{flex: 1, textDecoration: task.done ? 'line-through' : 'none', fontSize: '14px'}}>{task.text}</span>
+                                            <span style={{
+                                                padding: '4px 10px', borderRadius: '12px', fontSize: '11px', fontWeight: '600',
+                                                background: task.priority === 'عالي' ? '#ffe0e0' : task.priority === 'متوسط' ? '#fff3d0' : '#e0e8e0',
+                                                color: task.priority === 'عالي' ? '#c0392b' : task.priority === 'متوسط' ? '#b8860b' : '#2d5a27',
+                                            }}>{task.priority}</span>
+                                            <button onClick={() => deleteTask(task.id)} style={{background: 'none', border: 'none', cursor: 'pointer', fontSize: '16px', opacity: 0.5}}>🗑</button>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* بومودورو */}
+                        {activeSection === 'pomodoro' && (
+                            <div className="glass-card slide-up" style={{padding: '30px', textAlign: 'center'}}>
+                                <h2 style={{marginBottom: '20px'}}>🍅 مؤقت التركيز</h2>
+                                <div style={{
+                                    width: '160px', height: '160px', borderRadius: '50%',
+                                    background: `conic-gradient(#c49a7c ${((1500-pomodoroTime)/1500)*360}deg, ${darkMode ? '#2a221c' : '#e8d5c4'} 0deg)`,
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                    margin: '0 auto 20px', boxShadow: '0 20px 50px rgba(0,0,0,0.2)'
+                                }}>
+                                    <span style={{
+                                        width: '130px', height: '130px', borderRadius: '50%',
+                                        background: darkMode ? '#1a1612' : 'white',
+                                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                        fontSize: '36px', fontWeight: 'bold', fontFamily: 'monospace'
+                                    }}>
+                                        {String(minutes).padStart(2,'0')}:{String(seconds).padStart(2,'0')}
+                                    </span>
+                                </div>
+                                <div style={{display: 'flex', gap: '12px', justifyContent: 'center'}}>
+                                    <button onClick={() => setIsRunning(!isRunning)} className="btn-glow" style={{fontSize: '16px', padding: '14px 30px'}}>
+                                        {isRunning ? '⏸ إيقاف' : '▶ بدء'}
+                                    </button>
+                                    <button onClick={() => { setPomodoroTime(1500); setIsRunning(false); }}
+                                        style={{padding: '14px 24px', borderRadius: '18px', border: 'none', cursor: 'pointer', fontWeight: '600', background: 'rgba(200,190,180,0.4)'}}>
+                                        🔄 إعادة
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* الإحصائيات */}
+                        {activeSection === 'stats' && (
+                            <div className="glass-card slide-up" style={{padding: '24px'}}>
+                                <h2 style={{textAlign: 'center', marginBottom: '20px'}}>📊 لوحة الإحصائيات</h2>
+                                <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '14px'}}>
+                                    <div className="glass-card" style={{padding: '20px', textAlign: 'center'}}>
+                                        <div style={{fontSize: '40px'}}>🎯</div>
+                                        <div style={{fontSize: '28px', fontWeight: 'bold', color: '#c49a7c'}}>89%</div>
+                                        <div style={{fontSize: '12px', opacity: 0.7}}>درجة التركيز</div>
+                                    </div>
+                                    <div className="glass-card" style={{padding: '20px', textAlign: 'center'}}>
+                                        <div style={{fontSize: '40px'}}>✅</div>
+                                        <div style={{fontSize: '28px', fontWeight: 'bold', color: '#7eb8c9'}}>67%</div>
+                                        <div style={{fontSize: '12px', opacity: 0.7}}>إنجاز المهام</div>
+                                    </div>
+                                    <div className="glass-card" style={{padding: '20px', textAlign: 'center'}}>
+                                        <div style={{fontSize: '40px'}}>🏆</div>
+                                        <div style={{fontSize: '20px', fontWeight: 'bold'}}>باحث ذهبي</div>
+                                        <div style={{fontSize: '12px', opacity: 0.7}}>3,240 XP</div>
+                                    </div>
+                                    <div className="glass-card" style={{padding: '20px', textAlign: 'center'}}>
+                                        <div style={{fontSize: '40px'}}>🔥</div>
+                                        <div style={{fontSize: '28px', fontWeight: 'bold'}}>17</div>
+                                        <div style={{fontSize: '12px', opacity: 0.7}}>يوم متواصل</div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                    </div>
+
+                    {/* الشات بوت ومودال الحجز */}
+                    <ChatBot />
+                    <BookingModal isOpen={showBooking} onClose={() => setShowBooking(false)} />
+
+                    {/* الفوتر */}
+                    <footer style={{textAlign: 'center', padding: '30px', opacity: 0.6, fontSize: '13px'}}>
+                        <p style={{margin: 0}}>© 2025 <strong>MaWa Planner</strong> | صُنع بحب 🤍 بواسطة <strong>Aya Gaber</strong></p>
+                        <p style={{margin: '4px 0 0', fontSize: '11px'}}>كل الحقوق محفوظة | تواصل معانا: hello@mawaplanner.com</p>
+                    </footer>
+                </div>
+            );
+        }
+
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+</body>
+</html>
+
