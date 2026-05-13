@@ -1,460 +1,485 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MaWa Planner | Aya Gaber </title>
+    <title>MaWa Planner | Aya Gaber</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=El+Messiri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=El+Messiri:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
         :root {
-            --primary-light: #c49a7c;
-            --primary-dark: #a07050;
+            --primary: #c49a7c;
             --accent-blue: #7eb8c9;
             --accent-gold: #d4a853;
-            --accent-rose: #e8b4b8;
-            --bg-light: #faf7f2;
-            --bg-dark: #0f0d0a;
-            --glass-light: rgba(255, 252, 248, 0.55);
-            --glass-dark: rgba(20, 16, 12, 0.7);
-            --glass-border-light: rgba(255, 255, 255, 0.6);
-            --glass-border-dark: rgba(212, 168, 83, 0.3);
-            --navy: #1a2744;
-            --deep-brown: #3e2f24;
-            --success: #4caf50;
-            --warning: #ff9800;
-            --danger: #f44336;
+            --accent-rose: #e8c4b8;
         }
 
-        * { font-family: 'Cairo', sans-serif; scroll-behavior: smooth; margin: 0; padding: 0; box-sizing: border-box; }
+        * { font-family: 'Cairo', sans-serif; scroll-behavior: smooth; }
         
         body {
             margin: 0;
-            background: linear-gradient(135deg, #faf7f2 0%, #f0e8dd 30%, #e8dff5 60%, #faf7f2 100%);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-            transition: all 0.6s ease;
             overflow-x: hidden;
-            position: relative;
+            background: #faf7f2;
+            transition: all 0.6s ease;
         }
 
         body.dark-mode {
-            background: linear-gradient(135deg, #0f0d0a 0%, #1a1612 25%, #0d1a2d 50%, #1a1410 75%, #0f0d0a 100%);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-            color: #f0e7dc;
+            background: #0f0d0a;
         }
 
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* خلفية MaWa الجميلة */
-        .mawa-watermark {
+        /* خلفية منقوشة */
+        .pattern-bg {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            font-family: 'El Messiri', serif;
-            font-size: 80px;
-            font-weight: 900;
-            opacity: 0.06;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             pointer-events: none;
             z-index: 0;
-            white-space: nowrap;
-            transform: rotate(-5deg);
-            letter-spacing: 8px;
+            opacity: 0.4;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(196,154,124,0.12) 1px, transparent 1px),
+                radial-gradient(circle at 75% 75%, rgba(126,184,201,0.12) 1px, transparent 1px),
+                radial-gradient(circle at 50% 50%, rgba(212,168,83,0.08) 1px, transparent 1px);
+            background-size: 40px 40px, 50px 50px, 60px 60px;
+            animation: patternMove 20s linear infinite;
         }
 
-        body.dark-mode .mawa-watermark {
-            opacity: 0.04;
+        body.dark-mode .pattern-bg {
+            opacity: 0.3;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(212,168,83,0.15) 1px, transparent 1px),
+                radial-gradient(circle at 75% 75%, rgba(240,215,140,0.12) 1px, transparent 1px),
+                radial-gradient(circle at 50% 50%, rgba(196,154,124,0.1) 1px, transparent 1px);
         }
 
-        .brand-name {
-            font-family: 'El Messiri', serif;
-            font-size: 2.2rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #c49a7c, #d4a853, #c49a7c, #7eb8c9);
-            background-size: 300% 300%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shimmer 3s ease-in-out infinite;
-            filter: drop-shadow(0 0 15px rgba(196, 154, 124, 0.5));
+        @keyframes patternMove {
+            0% { background-position: 0 0, 0 0, 0 0; }
+            100% { background-position: 40px 40px, -50px 50px, 60px -60px; }
         }
 
-        body.dark-mode .brand-name {
-            background: linear-gradient(135deg, #d4a853, #f0d78c, #c49a7c, #b8946e);
-            background-size: 300% 300%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            filter: drop-shadow(0 0 20px rgba(212, 168, 83, 0.7));
+        /* فقاعات */
+        .bubbles-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
         }
 
-        @keyframes shimmer {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* كروت زجاجية فاخرة */
-        .glass-card {
-            background: var(--glass-light);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border-light);
-            border-radius: 32px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(255,255,255,0.3) inset;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        body.dark-mode .glass-card {
-            background: var(--glass-dark);
-            border: 1px solid var(--glass-border-dark);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3), 0 0 0 1px rgba(212,168,83,0.1) inset;
-        }
-
-        .glass-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.15);
-        }
-
-        body.dark-mode .glass-card:hover {
-            box-shadow: 0 30px 70px rgba(212, 168, 83, 0.15);
-        }
-
-        /* كروت البلانرز الفاخرة */
-        .planner-card {
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-            border-radius: 28px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.4), rgba(255,255,255,0.15));
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-
-        body.dark-mode .planner-card {
-            background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
-            border: 1px solid rgba(212,168,83,0.2);
-        }
-
-        .planner-card::before {
-            content: '';
-            position: absolute;
-            top: -100%;
-            left: -100%;
-            width: 300%;
-            height: 300%;
-            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
-            transition: all 0.6s;
-            opacity: 0;
-        }
-
-        .planner-card:hover::before {
-            top: -50%;
-            left: -50%;
-            opacity: 1;
-        }
-
-        .planner-card:active { transform: scale(0.96); }
-
-        /* الفقاعات */
         .bubble {
-            position: fixed;
+            position: absolute;
             border-radius: 50%;
-            pointer-events: none;
-            z-index: 0;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.6), rgba(200,180,210,0.2));
             animation: floatBubble 12s infinite ease-in-out;
-            background: radial-gradient(circle at 30% 30%, rgba(200,180,210,0.4), rgba(180,200,220,0.1));
-            box-shadow: 0 8px 25px rgba(150,160,200,0.15);
+            box-shadow: 0 8px 30px rgba(180,160,200,0.2);
         }
 
         body.dark-mode .bubble {
-            background: radial-gradient(circle at 30% 30%, rgba(212,168,83,0.2), rgba(30,40,60,0.05));
-            box-shadow: 0 8px 25px rgba(212,168,83,0.08);
+            background: radial-gradient(circle at 30% 30%, rgba(212,168,83,0.3), rgba(30,40,60,0.1));
+            box-shadow: 0 8px 30px rgba(212,168,83,0.15);
         }
 
         @keyframes floatBubble {
             0%, 100% { transform: translateY(0) translateX(0) scale(1); opacity: 0.4; }
             25% { transform: translateY(-40px) translateX(25px) scale(1.15); opacity: 0.7; }
             50% { transform: translateY(-20px) translateX(-20px) scale(0.9); opacity: 0.5; }
-            75% { transform: translateY(-50px) translateX(15px) scale(1.05); opacity: 0.6; }
+            75% { transform: translateY(-50px) translateX(15px) scale(1.1); opacity: 0.65; }
         }
 
-        /* النجوم للوضع المظلم */
-        .star-particle {
-            position: fixed;
-            pointer-events: none;
-            z-index: 0;
-            animation: twinkleStar 3s infinite alternate;
-        }
-
-        @keyframes twinkleStar {
-            0% { opacity: 0.15; transform: scale(0.8); }
-            100% { opacity: 1; transform: scale(1.3); }
-        }
-
-        /* رسالة ترحيب ساحرة */
-        .welcome-message {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 2000;
-            animation: slideDownFadeOut 8s ease forwards;
-            pointer-events: none;
-        }
-
-        @keyframes slideDownFadeOut {
-            0% {
-                opacity: 0;
-                transform: translateX(-50%) translateY(-100px);
-            }
-            15% {
-                opacity: 1;
-                transform: translateX(-50%) translateY(0);
-            }
-            85% {
-                opacity: 1;
-                transform: translateX(-50%) translateY(0);
-            }
-            100% {
-                opacity: 0;
-                transform: translateX(-50%) translateY(-50px);
-                visibility: hidden;
-            }
-        }
-
-        /* أزرار فخمة */
-        .btn-luxury {
-            background: linear-gradient(135deg, #c49a7c, #b08975);
-            color: white;
-            padding: 12px 28px;
-            border-radius: 50px;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 8px 25px rgba(180, 130, 100, 0.35);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-luxury:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(180, 130, 100, 0.5);
-        }
-
-        body.dark-mode .btn-luxury {
-            background: linear-gradient(135deg, #d4a853, #b8943e);
-            box-shadow: 0 8px 25px rgba(212, 168, 83, 0.4);
-        }
-
-        /* أيقونة الشات بوت الفاخرة */
-        .chat-gem {
-            position: fixed;
-            bottom: 30px;
-            left: 30px;
-            z-index: 1000;
-            cursor: pointer;
-            transition: all 0.4s ease;
-        }
-
-        .chat-gem:hover {
-            transform: scale(1.1) rotate(5deg);
-        }
-
-        .chat-gem-glow {
-            animation: gemPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes gemPulse {
-            0%, 100% {
-                box-shadow: 0 0 0 0 rgba(212, 168, 83, 0.7);
-            }
-            50% {
-                box-shadow: 0 0 0 15px rgba(212, 168, 83, 0);
-            }
-        }
-
-        /* مودال المنتج الفاخر */
-        .product-modal {
+        /* نجوم */
+        .stars-layer {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(12px);
-            z-index: 1500;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+
+        body.dark-mode .stars-layer { opacity: 1; }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2.5s infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.2; transform: scale(0.7); box-shadow: 0 0 4px 1px rgba(255,255,255,0.3); }
+            100% { opacity: 1; transform: scale(1.5); box-shadow: 0 0 12px 3px rgba(255,255,255,0.8); }
+        }
+
+        /* شاشة ترحيبية */
+        .welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
             display: flex;
             align-items: center;
             justify-content: center;
-            animation: fadeIn 0.4s ease;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(20px);
+            animation: fadeOut 1s ease forwards;
+            animation-delay: 6s;
+            pointer-events: all;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        @keyframes fadeOut {
+            to { opacity: 0; pointer-events: none; }
         }
 
-        @keyframes scaleUp {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
+        .welcome-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #f0d78c, #d4a853, #f0c8b0, #ffffff, #d4a853);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: welcomeShimmer 2s ease-in-out infinite, welcomeScale 1.5s ease forwards;
+            text-align: center;
+            filter: drop-shadow(0 0 40px rgba(212,168,83,0.8));
         }
 
-        .product-card {
-            animation: scaleUp 0.5s cubic-bezier(0.34, 1.2, 0.64, 1) forwards;
+        @keyframes welcomeShimmer {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes welcomeScale {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* زجاج */
+        .glass-card {
+            background: rgba(255, 252, 248, 0.5);
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 28px;
+            box-shadow: 0 15px 45px rgba(160, 130, 100, 0.1), 0 0 0 1px rgba(255,255,255,0.2) inset;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body.dark-mode .glass-card {
+            background: rgba(20, 16, 12, 0.6);
+            backdrop-filter: blur(22px);
+            border: 1px solid rgba(212, 168, 83, 0.2);
+            box-shadow: 0 15px 45px rgba(0,0,0,0.5), 0 0 0 1px rgba(212,168,83,0.08) inset;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 25px 60px rgba(160, 130, 100, 0.2);
+        }
+
+        body.dark-mode .glass-card:hover {
+            box-shadow: 0 25px 60px rgba(212, 168, 83, 0.2);
+        }
+
+        /* أيقونات زجاجية */
+        .glass-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+            box-shadow: 0 8px 20px rgba(160,130,100,0.15);
+        }
+
+        .glass-icon:hover {
+            transform: translateY(-8px) rotate(-5deg) scale(1.12);
+            box-shadow: 0 20px 40px rgba(160,130,100,0.3);
+            background: rgba(255,255,255,0.7);
+        }
+
+        body.dark-mode .glass-icon {
+            background: rgba(30,25,20,0.5);
+            border: 1px solid rgba(212,168,83,0.3);
+        }
+
+        body.dark-mode .glass-icon:hover {
+            background: rgba(40,35,28,0.7);
+            box-shadow: 0 20px 40px rgba(212,168,83,0.3);
+        }
+
+        /* أيقونة البراند */
+        .brand-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #f0d78c, #c49a7c, #7eb8c9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            animation: logoFloat 4s ease-in-out infinite;
+            box-shadow: 0 8px 30px rgba(196,154,124,0.4);
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-8px) rotate(3deg); }
+            75% { transform: translateY(-4px) rotate(-3deg); }
+        }
+
+        .brand-name {
+            font-family: 'El Messiri', serif;
+            font-size: 2.3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #c49a7c, #d4a853, #f0d78c, #c49a7c, #7eb8c9);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s linear infinite;
+            filter: drop-shadow(0 0 20px rgba(196, 154, 124, 0.5));
+        }
+
+        body.dark-mode .brand-name {
+            background: linear-gradient(135deg, #d4a853, #f0d78c, #ffd700, #d4a853, #c49a7c);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            filter: drop-shadow(0 0 30px rgba(255,215,0,0.8));
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .btn-glow {
+            background: linear-gradient(135deg, #c49a7c, #b08975);
+            color: white;
+            padding: 14px 30px;
+            border-radius: 20px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.4s;
+            box-shadow: 0 10px 30px rgba(180, 130, 100, 0.35);
+        }
+
+        .btn-glow:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 50px rgba(180, 130, 100, 0.5);
+        }
+
+        body.dark-mode .btn-glow {
+            background: linear-gradient(135deg, #d4a853, #b8943e);
+            box-shadow: 0 10px 30px rgba(212, 168, 83, 0.4);
+        }
+
+        /* خط ذهبي لامع */
+        .golden-text {
+            font-family: 'Playfair Display', serif;
+            background: linear-gradient(135deg, #d4a853, #f0d78c, #ffd700, #f0d78c, #d4a853);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 2.5s linear infinite;
+            font-weight: 600;
+        }
+
+        /* أيقونة شات بوت البراند */
+        .chat-brand-btn {
+            position: fixed;
+            bottom: 22px;
+            right: 22px;
+            z-index: 999;
+            width: 62px;
+            height: 62px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #c49a7c, #7eb8c9, #d4a853);
+            border: none;
+            cursor: pointer;
+            font-size: 26px;
+            color: white;
+            animation: chatPulse 3s infinite;
+            box-shadow: 0 12px 35px rgba(196,154,124,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes chatPulse {
+            0%, 100% { box-shadow: 0 12px 35px rgba(196,154,124,0.5); }
+            50% { box-shadow: 0 12px 60px rgba(196,154,124,0.8), 0 0 80px rgba(212,168,83,0.4); }
+        }
+
+        /* أيقونات التواصل المتحركة */
+        .social-icon-animated {
+            width: 50px;
+            height: 50px;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.35);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .social-icon-animated:hover {
+            transform: translateY(-10px) rotate(8deg) scale(1.2);
+            background: rgba(255,255,255,0.7);
+            box-shadow: 0 20px 40px rgba(160,130,100,0.35);
+        }
+
+        body.dark-mode .social-icon-animated {
+            background: rgba(30,25,20,0.5);
+            border: 1px solid rgba(212,168,83,0.3);
+        }
+
+        body.dark-mode .social-icon-animated:hover {
+            background: rgba(50,40,30,0.7);
+            box-shadow: 0 20px 40px rgba(212,168,83,0.35);
+        }
+
+        input, select, textarea {
+            padding: 14px 18px;
+            border-radius: 18px;
+            border: 2px solid rgba(180,160,140,0.3);
+            background: rgba(255,255,255,0.7);
+            font-family: 'Cairo', sans-serif;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #c49a7c;
+            box-shadow: 0 0 0 4px rgba(196,154,124,0.15);
+        }
+
+        body.dark-mode input, body.dark-mode select, body.dark-mode textarea {
+            background: rgba(30,25,20,0.7);
+            border-color: rgba(180,150,120,0.3);
+            color: #f0e7dc;
         }
 
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: rgba(220,210,200,0.3); border-radius: 10px; }
         ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #c49a7c, #7eb8c9); border-radius: 10px; }
-        body.dark-mode ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #d4a853, #1a2744); }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-up { animation: fadeInUp 0.6s ease forwards; }
     </style>
 </head>
 <body>
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect, useRef, useCallback, useMemo } = React;
+        const { useState, useEffect, useRef } = React;
 
-        // Toast Component
-        const Toast = ({ message, type, onClose }) => {
+        // ========== شاشة ترحيبية ==========
+        const WelcomeScreen = ({ onDone }) => {
+            const [visible, setVisible] = useState(true);
             useEffect(() => {
-                const timer = setTimeout(onClose, 3000);
+                const timer = setTimeout(() => {
+                    setVisible(false);
+                    if (onDone) onDone();
+                }, 7000);
                 return () => clearTimeout(timer);
-            }, [onClose]);
-
+            }, []);
+            if (!visible) return null;
             return (
-                <div className="fixed bottom-24 right-6 z-[2000] animate-slide-in-right">
-                    <div className={`glass-card px-6 py-3 flex items-center gap-3 ${
-                        type === 'success' ? 'border-green-400' : type === 'error' ? 'border-red-400' : 'border-gold-400'
-                    }`}>
-                        <span>{type === 'success' ? '✨' : type === 'error' ? '💔' : '💎'}</span>
-                        <span>{message}</span>
-                    </div>
+                <div className="welcome-screen">
+                    <h1 className="welcome-text">
+                        Welcome to MaWa<br />
+                        <span style={{fontSize: '1.5rem'}}>Your Journey Starts Here ✨</span>
+                    </h1>
                 </div>
             );
         };
 
-        // Product Modal Component
-        const ProductModal = ({ product, onClose }) => {
-            if (!product) return null;
-
-            return (
-                <div className="product-modal" onClick={onClose}>
-                    <div className="product-card glass-card max-w-md w-full mx-4 p-8" onClick={e => e.stopPropagation()}>
-                        <div className="text-center">
-                            <div className="text-7xl mb-4">{product.icon}</div>
-                            <h2 className="text-2xl font-bold mb-2" style={{fontFamily: "'El Messiri', serif"}}>{product.name}</h2>
-                            <p className="opacity-70 mb-4">{product.desc}</p>
-                            <div className="glass-card p-4 mb-4 text-right">
-                                <p className="mb-2"><span className="font-bold">✨ المميزات:</span> {product.features}</p>
-                                <p className="mb-2"><span className="font-bold">💰 السعر:</span> {product.price}</p>
-                                <p><span className="font-bold">📦 المحتوى:</span> {product.content}</p>
-                            </div>
-                            <div className="flex gap-3 justify-center">
-                                <button onClick={onClose} className="btn-luxury">إغلاق</button>
-                                <button className="btn-luxury" style={{background: 'linear-gradient(135deg, #d4a853, #b8943e)'}}>
-                                    <i className="fas fa-shopping-cart ml-2"></i>
-                                    اطلب الآن
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            );
-        };
-
-        // Chat Bot Component
-        const ChatBot = () => {
-            const [isOpen, setIsOpen] = useState(false);
-            const [messages, setMessages] = useState(() => {
-                const saved = localStorage.getItem('chatMessages');
-                return saved ? JSON.parse(saved) : [
-                    { from: 'bot', text: '🌸 مرحباً بك في MaWa Planner! كيف يمكنني مساعدتك اليوم؟', time: new Date().toLocaleTimeString() }
-                ];
-            });
+        // ========== أيقونة شات بوت ==========
+        const ChatBot = ({ lang }) => {
+            const [open, setOpen] = useState(false);
+            const [msgs, setMsgs] = useState([
+                { from: 'bot', text: lang === 'ar' ? '👋 أهلًا! أنا مساعد MaWa. اسألني أي حاجة!' : "👋 Hi! I'm MaWa assistant. Ask me anything!" }
+            ]);
             const [input, setInput] = useState('');
-            const [isTyping, setIsTyping] = useState(false);
-            const chatEndRef = useRef(null);
+            const ref = useRef(null);
 
-            useEffect(() => {
-                localStorage.setItem('chatMessages', JSON.stringify(messages));
-                chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-            }, [messages]);
+            useEffect(() => { if (ref.current) ref.current.scrollTop = ref.current.scrollHeight; }, [msgs]);
 
-            const sendMessage = useCallback(() => {
+            const reply = (msg) => {
+                const m = msg.toLowerCase();
+                if (m.includes('سعر') || m.includes('price')) return lang === 'ar' ? '💸 الأسعار تبدأ من 50 ج. تقدر تشوف التفاصيل في قسم البلانرز!' : '💸 Prices start from 50 EGP. Check planners section!';
+                if (m.includes('بلانر') || m.includes('planner')) return lang === 'ar' ? '📋 عندنا +30 بلانر لكل حاجة في حياتك!' : '📋 We have +30 planners for everything!';
+                if (m.includes('نوت') || m.includes('notebook')) return lang === 'ar' ? '📓 عندنا 9 أنواع نوت بوك مختلفة!' : '📓 We have 9 different notebook types!';
+                const replies = lang === 'ar' ? 
+                    ['🌟 فكرة رائعة! تحب تعرف أكتر؟', '💡 أقدر أساعدك تختار الأنسب.', '✨ كل منتجاتنا بجودة عالية.'] :
+                    ['🌟 Great idea! Want to know more?', '💡 I can help you choose.', '✨ All our products are high quality.'];
+                return replies[Math.floor(Math.random() * replies.length)];
+            };
+
+            const send = () => {
                 if (!input.trim()) return;
-                
-                setMessages(prev => [...prev, { from: 'user', text: input, time: new Date().toLocaleTimeString() }]);
+                setMsgs(p => [...p, { from: 'user', text: input }]);
+                const r = reply(input);
                 setInput('');
-                setIsTyping(true);
-
-                setTimeout(() => {
-                    const replies = [
-                        '💎 يمكنك تصفح جميع البلانرز الفاخرة من القائمة!',
-                        '📓 النوت بوك لدينا مصنوعة من أجود الخامات الفاخرة',
-                        '🎯 نقدر نساعدك تحقق أهدافك مع بلانرزنا المصممة بعناية',
-                        '💰 عندنا بلانر ميزانية حصري لإدارة أموالك بأناقة',
-                        '🌟 خصم 25% على الباقة الشاملة لفترة محدودة!'
-                    ];
-                    setMessages(prev => [...prev, { from: 'bot', text: replies[Math.floor(Math.random() * replies.length)], time: new Date().toLocaleTimeString() }]);
-                    setIsTyping(false);
-                }, 1000);
-            }, [input]);
+                setTimeout(() => setMsgs(p => [...p, { from: 'bot', text: r }]), 500);
+            };
 
             return (
                 <>
-                    <div className="chat-gem chat-gem-glow" onClick={() => setIsOpen(!isOpen)}>
-                        <div className="w-16 h-16 rounded-full bg-gradient-to-br from-amber-400 via-gold-500 to-amber-600 flex items-center justify-center shadow-2xl"
-                             style={{
-                                 background: 'linear-gradient(135deg, #d4a853, #c49a7c, #e8c49a)',
-                                 boxShadow: '0 10px 35px rgba(212,168,83,0.5)'
-                             }}>
-                            <i className="fas fa-gem text-3xl text-white" style={{textShadow: '0 2px 5px rgba(0,0,0,0.3)'}}></i>
-                        </div>
-                    </div>
-                    
-                    {isOpen && (
-                        <div className="fixed bottom-28 left-6 z-50 w-96 glass-card p-4 max-h-96 overflow-y-auto slide-up">
-                            <div className="flex justify-between items-center mb-3">
-                                <div className="flex items-center gap-2">
-                                    <i className="fas fa-gem text-amber-500"></i>
-                                </div>
-                                <button onClick={() => setIsOpen(false)} className="text-xl opacity-60 hover:opacity-100">✕</button>
+                    <button onClick={() => setOpen(!open)} className="chat-brand-btn">
+                        <i className="fas fa-comment-dots"></i>
+                    </button>
+                    {open && (
+                        <div style={{position: 'fixed', bottom: '100px', right: '22px', zIndex: 999, width: '340px', maxWidth: '90vw'}} className="glass-card animate-fade-up">
+                            <div style={{background: 'linear-gradient(135deg, #c49a7c, #7eb8c9)', padding: '14px 18px', borderRadius: '28px 28px 0 0', color: 'white', display: 'flex', justifyContent: 'space-between'}}>
+                                <span style={{fontWeight: 'bold'}}>💬 MaWa Chat</span>
+                                <button onClick={() => setOpen(false)} style={{background: 'none', border: 'none', color: 'white', fontSize: '18px', cursor: 'pointer'}}>✕</button>
                             </div>
-                            <div className="flex flex-col gap-2 mb-3 max-h-80 overflow-y-auto">
-                                {messages.map((m, i) => (
-                                    <div key={i} className={`flex ${m.from === 'bot' ? 'justify-start' : 'justify-end'}`}>
-                                        <div className={`max-w-[80%] p-3 rounded-2xl ${m.from === 'bot' ? 'bg-white/30 backdrop-blur-sm' : 'bg-gradient-to-r from-[#c49a7c] to-[#d4a853] text-white'}`}>
-                                            <div className="text-sm">{m.text}</div>
-                                            <div className="text-[10px] opacity-50 mt-1">{m.time}</div>
-                                        </div>
-                                    </div>
+                            <div ref={ref} style={{padding: '12px', maxHeight: '250px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '8px'}}>
+                                {msgs.map((m, i) => (
+                                    <div key={i} style={{padding: '10px 14px', borderRadius: '16px', maxWidth: '80%', alignSelf: m.from === 'bot' ? 'flex-start' : 'flex-end', background: m.from === 'bot' ? 'rgba(200,180,160,0.3)' : '#c49a7c', color: m.from === 'bot' ? 'inherit' : 'white', fontSize: '13px'}}>{m.text}</div>
                                 ))}
-                                {isTyping && (
-                                    <div className="flex justify-start">
-                                        <div className="bg-white/30 backdrop-blur-sm p-3 rounded-2xl">جاري الكتابة<span className="animate-pulse">...</span></div>
-                                    </div>
-                                )}
-                                <div ref={chatEndRef} />
                             </div>
-                            <div className="flex gap-2">
-                                <input value={input} onChange={e => setInput(e.target.value)}
-                                    onKeyPress={e => e.key === 'Enter' && sendMessage()}
-                                    placeholder="اكتب رسالتك..."
-                                    className="flex-1 p-3 rounded-2xl border border-white/30 bg-white/20 backdrop-blur-sm text-sm" />
-                                <button onClick={sendMessage} className="btn-luxury px-4 py-3">إرسال</button>
+                            <div style={{display: 'flex', gap: '8px', padding: '10px', borderTop: '1px solid rgba(0,0,0,0.1)'}}>
+                                <input value={input} onChange={e => setInput(e.target.value)} onKeyPress={e => e.key === 'Enter' && send()} placeholder={lang === 'ar' ? 'اكتب رسالتك...' : 'Type your message...'} style={{flex: 1, padding: '10px', borderRadius: '20px', fontSize: '13px'}} />
+                                <button onClick={send} style={{width: '38px', height: '38px', borderRadius: '50%', background: '#c49a7c', border: 'none', color: 'white', fontSize: '16px', cursor: 'pointer'}}>➤</button>
                             </div>
                         </div>
                     )}
@@ -462,407 +487,298 @@
             );
         };
 
-        // Main App Component
-        function App() {
-            const [darkMode, setDarkMode] = useState(() => {
-                const saved = localStorage.getItem('darkMode');
-                return saved ? JSON.parse(saved) : false;
-            });
-            const [activeSection, setActiveSection] = useState('planners');
-            const [showToast, setShowToast] = useState(null);
-            const [selectedProduct, setSelectedProduct] = useState(null);
-            const [showWelcome, setShowWelcome] = useState(true);
-            
-            const [tasks, setTasks] = useState(() => {
-                const saved = localStorage.getItem('tasks');
-                return saved ? JSON.parse(saved) : [
-                    { id: 1, text: 'مراجعة محاضرة الرياضيات', done: false, priority: 'عالي', category: 'دراسة' },
-                    { id: 2, text: 'قراءة كتاب التنمية الذاتية', done: false, priority: 'متوسط', category: 'قراءة' },
-                    { id: 3, text: 'تمارين الصباح', done: true, priority: 'منخفض', category: 'صحة' },
-                ];
-            });
-            
-            const [newTask, setNewTask] = useState('');
-            const [pomodoroTime, setPomodoroTime] = useState(1500);
-            const [isRunning, setIsRunning] = useState(false);
-            const [selectedTime, setSelectedTime] = useState(1500);
+        // ========== مودال تفاصيل المنتج ==========
+        const ProductModal = ({ product, onClose, lang }) => {
+            if (!product) return null;
+            return (
+                <div style={{position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(6px)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center'}} onClick={onClose}>
+                    <div className="glass-card animate-fade-up" style={{padding: '28px', width: '90%', maxWidth: '480px'}} onClick={e => e.stopPropagation()}>
+                        <div style={{textAlign: 'center', fontSize: '60px', marginBottom: '12px'}}>{product.icon}</div>
+                        <h3 style={{textAlign: 'center', fontSize: '20px', fontWeight: 'bold', marginBottom: '6px'}}>{lang === 'ar' ? product.name : product.nameEn}</h3>
+                        <p style={{textAlign: 'center', opacity: 0.7, marginBottom: '12px'}}>{lang === 'ar' ? product.desc : product.descEn}</p>
+                        <div style={{textAlign: 'center', fontSize: '28px', fontWeight: 'bold', color: '#c49a7c', marginBottom: '16px'}}>{product.price} <small style={{fontSize: '16px'}}>{lang === 'ar' ? 'جنيه' : 'EGP'}</small></div>
+                        <button onClick={() => { window.open(`https://wa.me/201023872753?text=${encodeURIComponent(lang === 'ar' ? `أريد حجز: ${product.name}` : `I want to order: ${product.nameEn}`)}`, '_blank'); onClose(); }} className="btn-glow" style={{width: '100%', fontSize: '16px', padding: '14px'}}>
+                            {lang === 'ar' ? '🛒 اطلب الآن عبر واتساب' : '🛒 Order via WhatsApp'}
+                        </button>
+                        <button onClick={onClose} style={{width: '100%', marginTop: '8px', padding: '10px', borderRadius: '14px', border: 'none', background: 'rgba(0,0,0,0.05)', cursor: 'pointer', fontWeight: '600'}}>{lang === 'ar' ? 'إغلاق' : 'Close'}</button>
+                    </div>
+                </div>
+            );
+        };
+
+        // ========== بومودورو ==========
+        const PomodoroTimer = ({ lang }) => {
+            const sessions = [
+                { name: lang === 'ar' ? 'تركيز قصير' : 'Short Focus', minutes: 15, icon: '☕', challenge: lang === 'ar' ? 'أنهِ مهمة واحدة صغيرة' : 'Finish one small task' },
+                { name: lang === 'ar' ? 'تركيز متوسط' : 'Medium Focus', minutes: 25, icon: '🍅', challenge: lang === 'ar' ? 'أكمل 3 صفحات' : 'Complete 3 pages' },
+                { name: lang === 'ar' ? 'تركيز عميق' : 'Deep Focus', minutes: 45, icon: '🔥', challenge: lang === 'ar' ? 'أنهِ مشروع كامل' : 'Finish a full project' },
+                { name: lang === 'ar' ? 'جلسة إبداعية' : 'Creative Session', minutes: 60, icon: '💡', challenge: lang === 'ar' ? 'ابتكر شيئًا جديدًا' : 'Create something new' },
+            ];
+            const [session, setSession] = useState(1);
+            const [time, setTime] = useState(sessions[1].minutes * 60);
+            const [running, setRunning] = useState(false);
             const timerRef = useRef(null);
 
-            // Welcome message auto-hide
+            useEffect(() => { setTime(sessions[session].minutes * 60); setRunning(false); }, [session]);
             useEffect(() => {
-                const timer = setTimeout(() => setShowWelcome(false), 4000);
-                return () => clearTimeout(timer);
-            }, []);
+                if (running && time > 0) { timerRef.current = setInterval(() => setTime(t => t - 1), 1000); }
+                else if (time === 0) { setRunning(false); alert(lang === 'ar' ? '🍅 انتهت الجلسة! استرح 5 دقائق.' : '🍅 Session done! Take 5 min break.'); }
+                return () => clearInterval(timerRef.current);
+            }, [running, time]);
 
-            useEffect(() => {
-                localStorage.setItem('tasks', JSON.stringify(tasks));
-            }, [tasks]);
-
-            useEffect(() => {
-                localStorage.setItem('darkMode', JSON.stringify(darkMode));
-                document.body.classList.toggle('dark-mode', darkMode);
-            }, [darkMode]);
-
-            useEffect(() => {
-                if (isRunning && pomodoroTime > 0) {
-                    timerRef.current = setInterval(() => {
-                        setPomodoroTime(t => {
-                            if (t <= 1) {
-                                setIsRunning(false);
-                                setShowToast({ message: '🍅 جلسة التركيز انتهت! أحسنتِ', type: 'success' });
-                                return 0;
-                            }
-                            return t - 1;
-                        });
-                    }, 1000);
-                } else if (pomodoroTime === 0 && !isRunning) {
-                    setPomodoroTime(selectedTime);
-                }
-                return () => {
-                    if (timerRef.current) clearInterval(timerRef.current);
-                };
-            }, [isRunning, pomodoroTime, selectedTime]);
-
-            const addTask = useCallback(() => {
-                if (!newTask.trim()) {
-                    setShowToast({ message: 'الرجاء إدخال مهمة', type: 'error' });
-                    return;
-                }
-                setTasks(prev => [{ id: Date.now(), text: newTask, done: false, priority: 'متوسط', category: 'عام' }, ...prev]);
-                setNewTask('');
-                setShowToast({ message: '✅ تم إضافة المهمة بنجاح', type: 'success' });
-            }, [newTask]);
-
-            const toggleTask = useCallback((id) => {
-                setTasks(prev => prev.map(t => t.id === id ? {...t, done: !t.done} : t));
-            }, []);
-
-            const deleteTask = useCallback((id) => {
-                setTasks(prev => prev.filter(t => t.id !== id));
-                setShowToast({ message: '🗑 تم حذف المهمة', type: 'success' });
-            }, []);
-
-            const setTimerPreset = useCallback((seconds) => {
-                setSelectedTime(seconds);
-                setPomodoroTime(seconds);
-                setIsRunning(false);
-            }, []);
-
-            const filteredTasks = useMemo(() => tasks, [tasks]);
-            const completedCount = useMemo(() => tasks.filter(t => t.done).length, [tasks]);
-            const completionRate = useMemo(() => tasks.length ? Math.round((completedCount / tasks.length) * 100) : 0, [tasks.length, completedCount]);
-
-            // بيانات البلانرز الفاخرة
-            const planners = [
-                { id: 'daily', name: 'البلانر اليومي', icon: 'fas fa-calendar-day', desc: 'خطط يومك بتفاصيل فاخرة', price: '85 جنيه', features: 'تقسيم يومي مفصل، متابع المهام، أولويات', content: 'ملف PDF قابل للطباعة + نسخة تفاعلية' },
-                { id: 'weekly', name: 'البلانر الأسبوعي', icon: 'fas fa-calendar-week', desc: 'رؤية أسبوعية شاملة', price: '120 جنيه', features: 'جدول أسبوعي، أهداف الأسبوع، مراجعة', content: 'ملف PDF + إكسسوارات رقمية' },
-                { id: 'monthly', name: 'البلانر الشهري', icon: 'fas fa-calendar-alt', desc: 'خطط شهر كامل بأناقة', price: '180 جنيه', features: 'تقويم شهري، متتبع العادات، أهداف الشهر', content: 'ملف PDF فاخر 30 صفحة' },
-                { id: 'semester', name: 'بلانر الفصل الدراسي', icon: 'fas fa-graduation-cap', desc: 'خطط دراستك بذكاء', price: '250 جنيه', features: 'جدول محاضرات، متابع واجبات، جدول امتحانات', content: 'ملف PDF + قوائم مراجعة' },
-                { id: 'exam', name: 'بلانر الامتحانات', icon: 'fas fa-pen-alt', desc: 'استعد لامتحاناتك بثقة', price: '95 جنيه', features: 'جدول مراجعة، متابع تقدم، نصائح دراسية', content: 'ملف PDF تفاعلي' },
-                { id: 'goals', name: 'بلانر الأهداف', icon: 'fas fa-bullseye', desc: 'حقق أهدافك السنوية', price: '150 جنيه', features: 'تقسيم الأهداف ربع سنوي، متتبع التقدم', content: 'ملف PDF + لوحة أهداف' },
-                { id: 'habits', name: 'متتبع العادات', icon: 'fas fa-chart-line', desc: 'ابنِ عاداتك الإيجابية', price: '75 جنيه', features: 'تتبع 12 عادة، تحليل أسبوعي', content: 'ملف PDF للتتبع اليومي' },
-                { id: 'budget', name: 'بلانر الميزانية', icon: 'fas fa-coins', desc: 'أدر أموالك بأناقة', price: '110 جنيه', features: 'تتبع الإيرادات والمصروفات، أهداف الادخار', content: 'ملف PDF + جداول حسابية' },
-                { id: 'fitness', name: 'بلانر اللياقة', icon: 'fas fa-heartbeat', desc: 'تتبع تمارينك ووجباتك', price: '95 جنيه', features: 'جدول تمارين، متتبع الوجبات', content: 'ملف PDF + قوائم تمارين' },
-                { id: 'reading', name: 'بلانر القراءة', icon: 'fas fa-book', desc: 'سجل قراءاتك الأدبية', price: '65 جنيه', features: 'قائمة كتب، ملخصات، اقتباسات', content: 'ملف PDF أنيق' },
-                { id: 'selfcare', name: 'بلانر العناية', icon: 'fas fa-spa', desc: 'اهتم بنفسك يومياً', price: '85 جنيه', features: 'روتين عناية، تتبع الحالة المزاجية', content: 'ملف PDF + صفحات تأمل' },
-                { id: 'mood', name: 'متتبع المزاج', icon: 'fas fa-smile', desc: 'راقب مشاعرك', price: '55 جنيه', features: 'تتبع المشاعر يومياً، تحليل أسبوعي', content: 'ملف PDF ملون' },
-            ];
-
-            // بيانات النوت بوك الفاخرة
-            const notebooks = [
-                { id: 'dotted', name: 'نوت بوك منقط', icon: 'fas fa-circle', desc: 'مثالي للـ Bullet Journal', price: '180 جنيه', features: 'ورق فاخر 120 جرام، تجليد فني', content: '100 صفحة منقّطة' },
-                { id: 'lined', name: 'نوت بوك مسطر', icon: 'fas fa-grip-lines', desc: 'للكتابة اليومية الأنيقة', price: '160 جنيه', features: 'مسطر بدقة، غلاف جلد صناعي', content: '120 صفحة فاخرة' },
-                { id: 'grid', name: 'نوت بوك مربعات', icon: 'fas fa-th', desc: 'للرسوم والجداول', price: '170 جنيه', features: 'مربعات دقيقة، مناسب للمهندسين', content: '90 صفحة مربعات' },
-                { id: 'blank', name: 'نوت بوك أبيض', icon: 'fas fa-square', desc: 'للرسم والكتابة الحرة', price: '200 جنيه', features: 'ورق ناعم للرسم، غلاف فاخر', content: '80 صفحة بيضاء' },
-                { id: 'planner', name: 'أجندة سنوية', icon: 'fas fa-calendar-check', desc: 'خطط عامك بالكامل', price: '350 جنيه', features: 'تقويم سنوي + شهري، ملاحق', content: '240 صفحة منظمة' },
-            ];
-
-            const openProduct = (product) => setSelectedProduct(product);
-            const minutes = Math.floor(pomodoroTime / 60);
-            const seconds = pomodoroTime % 60;
-            const radius = 80;
-            const circumference = 2 * Math.PI * radius;
-            const progress = ((selectedTime - pomodoroTime) / selectedTime) * circumference;
+            const mins = Math.floor(time / 60), secs = time % 60;
+            const progress = ((sessions[session].minutes * 60 - time) / (sessions[session].minutes * 60)) * 360;
 
             return (
-                <div style={{minHeight: '100vh', position: 'relative', zIndex: 1}}>
-                    {/* Floating Bubbles */}
-                    <div style={{position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 0}}>
-                        {Array.from({ length: 25 }).map((_, i) => (
-                            <div key={i} className="bubble" style={{
-                                width: Math.random() * 100 + 40 + 'px',
-                                height: Math.random() * 100 + 40 + 'px',
-                                left: Math.random() * 100 + '%',
-                                top: Math.random() * 100 + '%',
-                                animationDelay: Math.random() * 10 + 's',
-                                animationDuration: Math.random() * 10 + 8 + 's',
-                            }} />
+                <div className="glass-card animate-fade-up" style={{padding: '28px', textAlign: 'center', maxWidth: '500px', margin: '0 auto'}}>
+                    <h3 style={{marginBottom: '14px'}}>{lang === 'ar' ? '🍅 مؤقت التركيز' : '🍅 Focus Timer'}</h3>
+                    <div style={{display: 'flex', gap: '8px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '20px'}}>
+                        {sessions.map((s, i) => (
+                            <button key={i} onClick={() => setSession(i)} style={{
+                                padding: '8px 16px', borderRadius: '14px', border: 'none', cursor: 'pointer',
+                                fontWeight: i === session ? 'bold' : 'normal',
+                                background: i === session ? '#c49a7c' : 'rgba(200,180,160,0.2)',
+                                color: i === session ? 'white' : 'inherit', fontSize: '13px'
+                            }}>{s.icon} {s.name}</button>
                         ))}
                     </div>
+                    <div style={{width: '170px', height: '170px', borderRadius: '50%', background: `conic-gradient(#c49a7c ${progress}deg, rgba(200,180,160,0.15) 0deg)`, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px', boxShadow: '0 20px 50px rgba(0,0,0,0.2)'}}>
+                        <span style={{width: '140px', height: '140px', borderRadius: '50%', background: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '36px', fontWeight: 'bold', fontFamily: 'monospace'}}>{String(mins).padStart(2,'0')}:{String(secs).padStart(2,'0')}</span>
+                    </div>
+                    <div style={{marginBottom: '14px', fontWeight: '600', color: '#d4a853'}}>🎯 {sessions[session].challenge}</div>
+                    <div style={{display: 'flex', gap: '10px', justifyContent: 'center'}}>
+                        <button onClick={() => setRunning(!running)} className="btn-glow" style={{padding: '12px 28px'}}>{running ? (lang === 'ar' ? '⏸ إيقاف' : '⏸ Pause') : (lang === 'ar' ? '▶ بدء' : '▶ Start')}</button>
+                        <button onClick={() => { setTime(sessions[session].minutes * 60); setRunning(false); }} style={{padding: '12px 22px', borderRadius: '18px', border: 'none', background: 'rgba(180,160,140,0.3)', cursor: 'pointer', fontWeight: '600'}}>{lang === 'ar' ? '🔄 إعادة' : '🔄 Reset'}</button>
+                    </div>
+                </div>
+            );
+        };
 
-                    {/* Stars for Dark Mode */}
-                    {darkMode && (
-                        <div style={{position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 0}}>
-                            {Array.from({ length: 80 }).map((_, i) => (
-                                <div key={i} className="star-particle" style={{
-                                    top: Math.random() * 100 + '%',
-                                    left: Math.random() * 100 + '%',
-                                    width: Math.random() * 4 + 1 + 'px',
-                                    height: Math.random() * 4 + 1 + 'px',
-                                    background: '#fff',
-                                    borderRadius: '50%',
-                                    animationDelay: Math.random() * 4 + 's',
-                                    boxShadow: `0 0 ${Math.random() * 8 + 2}px rgba(255,255,255,0.6)`,
-                                }} />
+        // ========== تقرير تحليلي ==========
+        const TrackerReport = ({ lang }) => {
+            const [tasks, setTasks] = useState([
+                { id: 1, text: lang === 'ar' ? 'مراجعة المحاضرات' : 'Review lectures', done: false, priority: 'high' },
+                { id: 2, text: lang === 'ar' ? 'قراءة 30 صفحة' : 'Read 30 pages', done: true, priority: 'med' },
+                { id: 3, text: lang === 'ar' ? 'تمرين الصباح' : 'Morning exercise', done: false, priority: 'low' },
+                { id: 4, text: lang === 'ar' ? 'تخطيط الأسبوع' : 'Plan the week', done: true, priority: 'high' },
+            ]);
+            const [newTask, setNewTask] = useState('');
+            const add = () => { if (!newTask.trim()) return; setTasks([{ id: Date.now(), text: newTask, done: false, priority: 'med' }, ...tasks]); setNewTask(''); };
+            const toggle = (id) => setTasks(tasks.map(t => t.id === id ? {...t, done: !t.done} : t));
+            const done = tasks.filter(t => t.done).length;
+            const pct = tasks.length > 0 ? Math.round((done / tasks.length) * 100) : 0;
+            const highDone = tasks.filter(t => t.priority === 'high' && t.done).length;
+            const highTotal = tasks.filter(t => t.priority === 'high').length;
+
+            return (
+                <div className="glass-card animate-fade-up" style={{padding: '24px'}}>
+                    <h3 style={{marginBottom: '14px'}}>{lang === 'ar' ? '📊 تحليل الإنتاجية' : '📊 Productivity Analysis'}</h3>
+                    <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '12px', marginBottom: '16px'}}>
+                        <div className="glass-card" style={{padding: '16px', textAlign: 'center', background: 'rgba(196,154,124,0.1)'}}>
+                            <div style={{fontSize: '32px', fontWeight: 'bold', color: '#c49a7c'}}>{pct}%</div>
+                            <div style={{fontSize: '12px', opacity: 0.7}}>{lang === 'ar' ? 'معدل الإنجاز' : 'Completion rate'}</div>
+                        </div>
+                        <div className="glass-card" style={{padding: '16px', textAlign: 'center', background: 'rgba(126,184,201,0.1)'}}>
+                            <div style={{fontSize: '32px', fontWeight: 'bold', color: '#7eb8c9'}}>{done}/{tasks.length}</div>
+                            <div style={{fontSize: '12px', opacity: 0.7}}>{lang === 'ar' ? 'مهام مكتملة' : 'Tasks done'}</div>
+                        </div>
+                        <div className="glass-card" style={{padding: '16px', textAlign: 'center', background: 'rgba(212,168,83,0.1)'}}>
+                            <div style={{fontSize: '32px', fontWeight: 'bold', color: '#d4a853'}}>{highDone}/{highTotal}</div>
+                            <div style={{fontSize: '12px', opacity: 0.7}}>{lang === 'ar' ? 'مهام عالية الأولوية' : 'High priority'}</div>
+                        </div>
+                    </div>
+                    <div style={{background: 'rgba(200,180,160,0.2)', borderRadius: '14px', height: '10px', marginBottom: '14px', overflow: 'hidden'}}>
+                        <div style={{height: '100%', background: 'linear-gradient(90deg, #c49a7c, #7eb8c9, #d4a853)', borderRadius: '14px', width: pct + '%', transition: 'width 0.6s'}}></div>
+                    </div>
+                    <p style={{textAlign: 'center', fontWeight: 'bold', fontSize: '14px', marginBottom: '8px'}}>
+                        {pct >= 80 ? (lang === 'ar' ? '🌟 أداء ممتاز! أنت منجز.' : '🌟 Excellent! You are a high achiever.') :
+                         pct >= 50 ? (lang === 'ar' ? '👍 أداء جيد. واصل التقدم!' : '👍 Good job. Keep going!') :
+                         (lang === 'ar' ? '💪 ابدأ بمهمة صغيرة. كل خطوة تحسب.' : '💪 Start small. Every step counts.')}
+                    </p>
+                    <div style={{display: 'flex', gap: '8px', marginBottom: '12px'}}>
+                        <input value={newTask} onChange={e => setNewTask(e.target.value)} onKeyPress={e => e.key === 'Enter' && add()} placeholder={lang === 'ar' ? '✍️ مهمة جديدة...' : '✍️ New task...'} style={{flex: 1}} />
+                        <button onClick={add} className="btn-glow" style={{padding: '10px 18px'}}>➕</button>
+                    </div>
+                    <div style={{display: 'flex', flexDirection: 'column', gap: '6px', maxHeight: '200px', overflowY: 'auto'}}>
+                        {tasks.map(t => (
+                            <div key={t.id} style={{display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 12px', borderRadius: '12px', background: t.done ? 'rgba(200,220,200,0.3)' : 'rgba(255,255,255,0.4)', opacity: t.done ? 0.7 : 1}}>
+                                <input type="checkbox" checked={t.done} onChange={() => toggle(t.id)} style={{width: '18px', height: '18px', accentColor: '#c49a7c'}} />
+                                <span style={{flex: 1, textDecoration: t.done ? 'line-through' : 'none', fontSize: '14px'}}>{t.text}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
+        // ========== التطبيق الرئيسي ==========
+        function App() {
+            const [lang, setLang] = useState('ar');
+            const [dark, setDark] = useState(false);
+            const [tab, setTab] = useState('home');
+            const [selected, setSelected] = useState(null);
+            const [showWelcome, setShowWelcome] = useState(true);
+
+            useEffect(() => { document.body.classList.toggle('dark-mode', dark); }, [dark]);
+
+            const planners = [
+                { name: 'يومي', nameEn: 'Daily', icon: '📋', desc: 'تخطيط يومي مفصل', descEn: 'Detailed daily planning', price: 50 },
+                { name: 'أسبوعي', nameEn: 'Weekly', icon: '📅', desc: 'رؤية أسبوعية شاملة', descEn: 'Comprehensive weekly view', price: 75 },
+                { name: 'شهري', nameEn: 'Monthly', icon: '🗓️', desc: 'أهداف الشهر', descEn: 'Monthly goals', price: 100 },
+                { name: 'فصل دراسي', nameEn: 'Semester', icon: '🎓', desc: 'خطة الترم', descEn: 'Semester plan', price: 90 },
+                { name: 'امتحانات', nameEn: 'Exams', icon: '📝', desc: 'جدول مذاكرة', descEn: 'Study schedule', price: 60 },
+                { name: 'أهداف', nameEn: 'Goals', icon: '🎯', desc: 'تتبع الأهداف', descEn: 'Goal tracking', price: 70 },
+                { name: 'عادات', nameEn: 'Habits', icon: '🔄', desc: 'بناء روتين', descEn: 'Build routines', price: 55 },
+                { name: 'قراءة', nameEn: 'Reading', icon: '📚', desc: 'قائمة كتب', descEn: 'Book list', price: 45 },
+                { name: 'لياقة', nameEn: 'Fitness', icon: '🏋️', desc: 'تمارين رياضية', descEn: 'Workout plan', price: 65 },
+                { name: 'ميزانية', nameEn: 'Budget', icon: '💰', desc: 'إدارة مالية', descEn: 'Financial management', price: 80 },
+                { name: 'مزاج', nameEn: 'Mood', icon: '🌈', desc: 'تتبع المشاعر', descEn: 'Mood tracking', price: 40 },
+                { name: 'وجبات', nameEn: 'Meals', icon: '🍽️', desc: 'تخطيط وجبات', descEn: 'Meal planning', price: 50 },
+            ];
+
+            const content = {
+                homeTitle: lang === 'ar' ? '🌟 منظمك الشخصي المتكامل' : '🌟 Your All-in-One Planner',
+                homeSub: lang === 'ar' ? '+30 بلانر | +9 نوت بوك | مؤقت تركيز | تتبع ذكي' : '+30 Planners | +9 Notebooks | Focus Timer | Smart Tracking',
+                startBtn: lang === 'ar' ? '🚀 ابدأ التخطيط الآن' : '🚀 Start Planning Now',
+                plannersTitle: lang === 'ar' ? '📋 كل أنواع البلانرز' : '📋 All Planner Types',
+                notebooksTitle: lang === 'ar' ? '📓 كل أنواع النوت بوك' : '📓 All Notebook Types',
+                pomodoroTitle: lang === 'ar' ? '🍅 بومودورو' : '🍅 Pomodoro',
+                trackerTitle: lang === 'ar' ? '📊 تتبع' : '📊 Tracker',
+            };
+
+            const notebooks = [
+                { name: lang === 'ar' ? 'منقط' : 'Dotted', icon: '🔵', desc: lang === 'ar' ? 'للرسم والتخطيط' : 'For sketching & planning' },
+                { name: lang === 'ar' ? 'مسطر' : 'Lined', icon: '📝', desc: lang === 'ar' ? 'للكتابة اليومية' : 'Daily writing' },
+                { name: lang === 'ar' ? 'مربعات' : 'Grid', icon: '📐', desc: lang === 'ar' ? 'للجداول' : 'For tables' },
+                { name: lang === 'ar' ? 'أبيض' : 'Blank', icon: '⬜', desc: lang === 'ar' ? 'للرسم الحر' : 'Free drawing' },
+                { name: lang === 'ar' ? 'أجندة' : 'Agenda', icon: '📒', desc: lang === 'ar' ? 'تقويم سنوي' : 'Yearly calendar' },
+                { name: lang === 'ar' ? 'سكيتش' : 'Sketch', icon: '🎨', desc: lang === 'ar' ? 'للإبداع' : 'For creativity' },
+                { name: lang === 'ar' ? 'موسيقى' : 'Music', icon: '🎵', desc: lang === 'ar' ? 'للنوت الموسيقية' : 'Music sheets' },
+                { name: lang === 'ar' ? 'وصفات' : 'Recipes', icon: '👨‍🍳', desc: lang === 'ar' ? 'لجمع الوصفات' : 'Recipe collection' },
+                { name: lang === 'ar' ? 'يوميات' : 'Diary', icon: '📔', desc: lang === 'ar' ? 'للكتابة الشخصية' : 'Personal journal' },
+            ];
+
+            const tabs = [
+                { id: 'home', name: lang === 'ar' ? '🏠 الرئيسية' : '🏠 Home' },
+                { id: 'planners', name: lang === 'ar' ? '📋 البلانرز' : '📋 Planners' },
+                { id: 'notebooks', name: lang === 'ar' ? '📓 النوت بوك' : '📓 Notebooks' },
+                { id: 'pomodoro', name: lang === 'ar' ? '🍅 بومودورو' : '🍅 Pomodoro' },
+                { id: 'tracker', name: lang === 'ar' ? '📊 التتبع' : '📊 Tracker' },
+            ];
+
+            return (
+                <>
+                    {showWelcome && <WelcomeScreen onDone={() => setShowWelcome(false)} />}
+                    
+                    <div style={{minHeight: '100vh', position: 'relative', zIndex: 1}}>
+                        <div className="pattern-bg" />
+                        <div className="bubbles-layer">
+                            {Array.from({length: 18}, (_, i) => (
+                                <div key={i} className="bubble" style={{width: (Math.random()*70+25)+'px', height: (Math.random()*70+25)+'px', left: (Math.random()*100)+'%', top: (Math.random()*100)+'%', animationDelay: (Math.random()*12)+'s', animationDuration: (Math.random()*10+8)+'s'}} />
                             ))}
                         </div>
-                    )}
-
-                    {/* MaWa Watermark */}
-                    <div className="mawa-watermark">MaWa ✨ MaWa ✨ MaWa</div>
-
-                    {/* Welcome Message */}
-                    {showWelcome && (
-                        <div className="welcome-message">
-                            <div className="glass-card px-8 py-4 text-center">
-                                <div className="flex items-center gap-3">
-                                    <i className="fas fa-gem text-2xl text-amber-500"></i>
-                                    <span className="font-bold text-lg">✨ مرحباً بك في عالم MaWa Planner ✨</span>
-                                    <i className="fas fa-star text-2xl text-amber-500"></i>
-                                </div>
-                                <p className="text-sm mt-1 opacity-75"> رحلتك نحو التنظيم</p>
-                            </div>
+                        <div className="stars-layer">
+                            {Array.from({length: 50}, (_, i) => (
+                                <div key={i} className="star" style={{width: (Math.random()*3+2)+'px', height: (Math.random()*3+2)+'px', left: (Math.random()*100)+'%', top: (Math.random()*100)+'%', animationDelay: (Math.random()*3)+'s'}} />
+                            ))}
                         </div>
-                    )}
 
-                    {showToast && <Toast message={showToast.message} type={showToast.type} onClose={() => setShowToast(null)} />}
-                    {selectedProduct && <ProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />}
-
-                    {/* Header */}
-                    <header className="glass-card mx-3 mt-3 px-6 py-4 sticky top-3 z-[100]">
-                        <div className="flex justify-between items-center flex-wrap gap-3">
-                            <div className="flex items-center gap-3">
-                                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-400 via-rose-300 to-blue-300 flex items-center justify-center shadow-xl">
-                                    <i className="fas fa-feather-alt text-white text-xl"></i>
+                        {/* هيدر */}
+                        <header className="glass-card" style={{margin: '12px', padding: '14px 20px', position: 'sticky', top: '12px', zIndex: 100}}>
+                            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px'}}>
+                                <div style={{display: 'flex', alignItems: 'center', gap: '10px'}}>
+                                    <div className="brand-logo">🌸</div>
+                                    <h1 className="brand-name" style={{margin: 0, lineHeight: 1.2}}>MaWa Planner</h1>
                                 </div>
-                                <div>
-                                    <h1 className="brand-name text-2xl">MaWa Planner</h1>
-                                    <p className="text-xs opacity-60">by Aya Gaber ✨</p>
+                                <div style={{display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap'}}>
+                                    <button onClick={() => setLang(lang === 'ar' ? 'en' : 'ar')} style={{width: '38px', height: '38px', borderRadius: '12px', border: 'none', background: 'rgba(255,255,255,0.4)', cursor: 'pointer', fontSize: '18px'}} title={lang === 'ar' ? 'English' : 'العربية'}>🌐</button>
+                                    <button onClick={() => setDark(!dark)} style={{width: '38px', height: '38px', borderRadius: '12px', border: 'none', background: dark ? '#d4a853' : '#7eb8c9', color: 'white', cursor: 'pointer', fontSize: '18px'}}>{dark ? '☀️' : '🌙'}</button>
                                 </div>
                             </div>
-                            <div className="flex gap-2 items-center flex-wrap">
-                                <div className="glass-card px-3 py-2 rounded-full text-sm">
-                                    <i className="fas fa-fire ml-1 text-amber-500"></i>
-                                    <span className="font-semibold">{Math.max(1, Math.floor(completedCount * 3))} يوم</span>
+                        </header>
+
+                        {/* التنقل */}
+                        <div style={{display: 'flex', gap: '6px', padding: '0 14px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '16px'}}>
+                            {tabs.map(t => (
+                                <div key={t.id} onClick={() => setTab(t.id)} className="glass-icon" style={{padding: '12px 18px', borderRadius: '18px', cursor: 'pointer', fontWeight: tab === t.id ? 'bold' : 'normal', background: tab === t.id ? 'rgba(196,154,124,0.25)' : 'rgba(255,255,255,0.3)', fontSize: '13px', width: 'auto', height: 'auto'}}>
+                                    {t.name}
                                 </div>
-                                <div className="glass-card px-3 py-2 rounded-full text-sm">
-                                    <i className="fas fa-gem ml-1 text-amber-500"></i>
-                                    <span className="font-semibold">{completedCount * 500} XP</span>
-                                </div>
-                                <button onClick={() => setDarkMode(!darkMode)} className="btn-luxury w-10 h-10 p-0 flex items-center justify-center rounded-full">
-                                    <i className={`fas ${darkMode ? 'fa-sun' : 'fa-moon'}`}></i>
-                                </button>
-                            </div>
+                            ))}
                         </div>
-                    </header>
 
-                    {/* Navigation */}
-                    <div className="flex gap-2 justify-center flex-wrap my-4 px-4">
-                        {[
-                            { id: 'planners', name: 'البلانرز', icon: 'fas fa-calendar-alt' },
-                            { id: 'notebooks', name: 'النوت بوك', icon: 'fas fa-book' },
-                            { id: 'tasks', name: 'مهامي', icon: 'fas fa-check-circle' },
-                            { id: 'pomodoro', name: 'بومودورو', icon: 'fas fa-hourglass-half' },
-                            { id: 'stats', name: 'إحصائياتي', icon: 'fas fa-chart-pie' },
-                        ].map(tab => (
-                            <button key={tab.id} onClick={() => setActiveSection(tab.id)}
-                                className={`px-5 py-2 rounded-full transition-all duration-300 flex items-center gap-2 ${
-                                    activeSection === tab.id 
-                                    ? 'bg-gradient-to-r from-[#c49a7c] to-[#d4a853] text-white shadow-lg' 
-                                    : 'glass-card text-current'
-                                }`}>
-                                <i className={tab.icon}></i>
-                                <span className="text-sm font-medium">{tab.name}</span>
-                            </button>
-                        ))}
+                        {/* محتوى */}
+                        <div style={{padding: '0 14px', paddingBottom: '120px'}}>
+                            {tab === 'home' && (
+                                <>
+                                    <div className="glass-card animate-fade-up" style={{padding: '40px 24px', textAlign: 'center', marginBottom: '18px'}}>
+                                        <h2 style={{fontSize: '28px', marginBottom: '6px'}}>{content.homeTitle}</h2>
+                                        <p style={{fontSize: '15px', opacity: 0.8, marginBottom: '18px'}}>{content.homeSub}</p>
+                                        <button onClick={() => setTab('planners')} className="btn-glow" style={{fontSize: '17px', padding: '16px 36px'}}>{content.startBtn}</button>
+                                    </div>
+                                    <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '12px'}}>
+                                        {[{title: lang === 'ar' ? '+30 بلانر' : '+30 Planners', icon: '📋'}, {title: lang === 'ar' ? '+9 نوت بوك' : '+9 Notebooks', icon: '📓'}, {title: lang === 'ar' ? 'بومودورو' : 'Pomodoro', icon: '🍅'}, {title: lang === 'ar' ? 'تتبع' : 'Tracker', icon: '📊'}].map((f, i) => (
+                                            <div key={i} className="glass-card" style={{padding: '22px', textAlign: 'center', cursor: 'pointer'}} onClick={() => setTab(['planners','notebooks','pomodoro','tracker'][i])}>
+                                                <div style={{fontSize: '40px', marginBottom: '8px'}}>{f.icon}</div>
+                                                <h4 style={{fontWeight: 'bold', fontSize: '14px'}}>{f.title}</h4>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </>
+                            )}
+
+                            {tab === 'planners' && (
+                                <>
+                                    <h2 className="section-title" style={{textAlign: 'center', fontSize: '24px', marginBottom: '16px', background: 'linear-gradient(135deg, #c49a7c, #7eb8c9)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'}}>{content.plannersTitle}</h2>
+                                    <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '12px'}}>
+                                        {planners.map((p, i) => (
+                                            <div key={i} className="glass-card" style={{padding: '18px 14px', textAlign: 'center', cursor: 'pointer'}} onClick={() => setSelected(p)}>
+                                                <div style={{fontSize: '36px', marginBottom: '6px'}}>{p.icon}</div>
+                                                <div style={{fontWeight: 'bold', fontSize: '13px'}}>{lang === 'ar' ? p.name : p.nameEn}</div>
+                                                <div style={{fontSize: '11px', opacity: 0.6, marginTop: '4px'}}>{lang === 'ar' ? p.desc : p.descEn}</div>
+                                                <div style={{fontWeight: 'bold', color: '#c49a7c', marginTop: '6px'}}>{p.price} {lang === 'ar' ? 'ج' : 'EGP'}</div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </>
+                            )}
+
+                            {tab === 'notebooks' && (
+                                <>
+                                    <h2 className="section-title" style={{textAlign: 'center', fontSize: '24px', marginBottom: '16px', background: 'linear-gradient(135deg, #7eb8c9, #d4a853)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'}}>{content.notebooksTitle}</h2>
+                                    <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '12px'}}>
+                                        {notebooks.map((n, i) => (
+                                            <div key={i} className="glass-card" style={{padding: '18px 14px', textAlign: 'center'}}>
+                                                <div style={{fontSize: '36px', marginBottom: '6px'}}>{n.icon}</div>
+                                                <div style={{fontWeight: 'bold', fontSize: '13px'}}>{n.name}</div>
+                                                <div style={{fontSize: '11px', opacity: 0.6, marginTop: '4px'}}>{n.desc}</div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </>
+                            )}
+
+                            {tab === 'pomodoro' && <PomodoroTimer lang={lang} />}
+                            {tab === 'tracker' && <TrackerReport lang={lang} />}
+                        </div>
+
+                        {/* فوتر */}
+                        <footer className="glass-card" style={{margin: '14px', padding: '26px 18px', textAlign: 'center', borderRadius: '28px 28px 0 0'}}>
+                            <h3 style={{marginBottom: '14px', fontWeight: 'bold'}}>{lang === 'ar' ? '📞 تواصل معنا' : '📞 Contact Us'}</h3>
+                            <div style={{display: 'flex', justifyContent: 'center', gap: '14px', flexWrap: 'wrap', marginBottom: '14px'}}>
+                                <a href="https://wa.me/201023872753" target="_blank" className="social-icon-animated" style={{color: '#25D366'}}><i className="fab fa-whatsapp"></i></a>
+                                <a href="https://t.me/01023872753" target="_blank" className="social-icon-animated" style={{color: '#0088cc'}}><i className="fab fa-telegram-plane"></i></a>
+                                <a href="mailto:ayag63071@gmail.com" className="social-icon-animated" style={{color: '#EA4335'}}><i className="fas fa-envelope"></i></a>
+                            </div>
+                            <p className="golden-text" style={{fontSize: '14px', fontFamily: 'Playfair Display, serif', margin: 0}}>
+                                © 2026 • Design by Owner Aya Gaber with love 💛
+                            </p>
+                            <p style={{fontSize: '11px', opacity: 0.5, margin: '4px 0 0'}}>📱 01023872753 | 📧 ayag63071@gmail.com</p>
+                        </footer>
+
+                        <ChatBot lang={lang} />
+                        {selected && <ProductModal product={selected} onClose={() => setSelected(null)} lang={lang} />}
                     </div>
-
-                    {/* Main Content */}
-                    <div className="px-4 pb-24">
-                        
-                        {/* Planners Section */}
-                        {activeSection === 'planners' && (
-                            <div className="glass-card p-6 slide-up">
-                                <h2 className="text-center text-2xl font-bold mb-6 flex items-center justify-center gap-2">
-                                    <i className="fas fa-gem text-amber-500"></i>
-تشكيلة البلانرز المتوفرة
-                                    </h2>
-                                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                                    {planners.map(p => (
-                                        <div key={p.id} onClick={() => openProduct(p)} className="planner-card p-4 text-center cursor-pointer group">
-                                            <div className="text-5xl mb-3 text-amber-600 group-hover:scale-110 transition-transform duration-300">
-                                                <i className={p.icon}></i>
-                                            </div>
-                                            <div className="font-bold text-base">{p.name}</div>
-                                            <div className="text-xs opacity-60 mb-2">{p.desc}</div>
-                                            <div className="text-sm font-semibold text-amber-600">{p.price}</div>
-                                            <div className="mt-2 opacity-0 group-hover:opacity-100 transition-opacity text-xs text-amber-500">
-                                                <i className="fas fa-eye ml-1"></i> اضغط للتفاصيل
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Notebooks Section */}
-                        {activeSection === 'notebooks' && (
-                            <div className="glass-card p-6 slide-up">
-                                <h2 className="text-center text-2xl font-bold mb-6 flex items-center justify-center gap-2">
-                                    <i className="fas fa-gem text-amber-500"></i>
-                                    مجموعة النوت بوك الفاخرة
-                                </h2>
-                                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                                    {notebooks.map(n => (
-                                        <div key={n.id} onClick={() => openProduct(n)} className="planner-card p-5 text-center cursor-pointer group">
-                                            <div className="text-6xl mb-3 text-amber-600 group-hover:scale-110 transition-transform duration-300">
-                                                <i className={n.icon}></i>
-                                            </div>
-                                            <div className="font-bold text-base">{n.name}</div>
-                                            <div className="text-xs opacity-60 mb-2">{n.desc}</div>
-                                            <div className="text-sm font-semibold text-amber-600">{n.price}</div>
-                                            <div className="mt-2 opacity-0 group-hover:opacity-100 transition-opacity text-xs text-amber-500">
-                                                <i className="fas fa-eye ml-1"></i> اضغط للتفاصيل
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Tasks Section */}
-                        {activeSection === 'tasks' && (
-                            <div className="glass-card p-6 slide-up">
-                                <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-                                    <i className="fas fa-tasks text-amber-500"></i>
-                                    مهامي اليومية
-                                </h2>
-                                <div className="flex gap-3 mb-4">
-                                    <input value={newTask} onChange={e => setNewTask(e.target.value)}
-                                        onKeyPress={e => e.key === 'Enter' && addTask()}
-                                        placeholder="✍️ اكتب مهمة جديدة..."
-                                        className="flex-1 p-3 rounded-2xl border border-white/30 bg-white/20 backdrop-blur-sm" />
-                                    <button onClick={addTask} className="btn-luxury">➕ إضافة</button>
-                                </div>
-                                <div className="flex flex-col gap-2 max-h-96 overflow-y-auto">
-                                    {filteredTasks.map(task => (
-                                        <div key={task.id} className={`flex items-center gap-3 p-3 rounded-xl transition-all ${task.done ? 'bg-white/20' : 'bg-white/30'}`}>
-                                            <input type="checkbox" checked={task.done} onChange={() => toggleTask(task.id)}
-                                                className="w-5 h-5 accent-amber-500 cursor-pointer" />
-                                            <span className={`flex-1 ${task.done ? 'line-through opacity-50' : ''}`}>{task.text}</span>
-                                            <span className={`text-xs px-2 py-1 rounded-full ${
-                                                task.priority === 'عالي' ? 'bg-red-500/20 text-red-600' :
-                                                task.priority === 'متوسط' ? 'bg-yellow-500/20 text-yellow-600' :
-                                                'bg-green-500/20 text-green-600'
-                                            }`}>{task.priority}</span>
-                                            <button onClick={() => deleteTask(task.id)} className="opacity-40 hover:opacity-100">
-                                                <i className="fas fa-trash-alt"></i>
-                                            </button>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Pomodoro Section */}
-                        {activeSection === 'pomodoro' && (
-                            <div className="glass-card p-6 text-center slide-up">
-                                <h2 className="text-xl font-bold mb-4 flex items-center justify-center gap-2">
-                                    <i className="fas fa-hourglass-half text-amber-500"></i>
-                                    مؤقت بومودورو
-                                </h2>
-                                <div className="flex gap-2 justify-center mb-6">
-                                    <button onClick={() => setTimerPreset(1500)} className="btn-luxury text-sm">🍅 25 د</button>
-                                    <button onClick={() => setTimerPreset(300)} className="btn-luxury text-sm">☕ 5 د</button>
-                                    <button onClick={() => setTimerPreset(900)} className="btn-luxury text-sm">💪 15 د</button>
-                                </div>
-                                <div className="relative w-52 h-52 mx-auto mb-5">
-                                    <svg width="208" height="208" style={{transform: 'rotate(-90deg)'}}>
-                                        <circle cx="104" cy="104" r={radius} fill="none" stroke={darkMode ? '#2a221c' : '#e8d5c4'} strokeWidth="10" />
-                                        <circle cx="104" cy="104" r={radius} fill="none" stroke="#d4a853" strokeWidth="10"
-                                            strokeDasharray={circumference} strokeDashoffset={circumference - progress}
-                                            strokeLinecap="round" className="transition-all duration-300" />
-                                    </svg>
-                                    <div className="absolute inset-0 flex items-center justify-center">
-                                        <div className="text-center">
-                                            <div className="text-4xl font-mono font-bold">{String(minutes).padStart(2,'0')}:{String(seconds).padStart(2,'0')}</div>
-                                            <div className="text-xs opacity-60 mt-1">{isRunning ? 'يتدفق التركيز...' : 'جاهز للانطلاق'}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="flex gap-3 justify-center">
-                                    <button onClick={() => setIsRunning(!isRunning)} className="btn-luxury">
-                                        <i className={`fas ${isRunning ? 'fa-pause' : 'fa-play'} ml-1`}></i>
-                                        {isRunning ? 'إيقاف' : 'بدء'}
-                                    </button>
-                                    <button onClick={() => { setPomodoroTime(selectedTime); setIsRunning(false); }} className="btn-luxury">
-                                        <i className="fas fa-redo-alt ml-1"></i>
-                                        إعادة
-                                    </button>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Stats Section */}
-                        {activeSection === 'stats' && (
-                            <div className="glass-card p-6 slide-up">
-                                <h2 className="text-xl font-bold mb-5 text-center flex items-center justify-center gap-2">
-                                    <i className="fas fa-chart-pie text-amber-500"></i>
-                                    لوحة إنجازاتي
-                                </h2>
-                                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
-                                    <div className="glass-card p-4 text-center">
-                                        <div className="text-3xl mb-1">🎯</div>
-                                        <div className="text-2xl font-bold text-amber-600">{completionRate}%</div>
-                                        <div className="text-xs opacity-60">نسبة الإنجاز</div>
-                                    </div>
-                                    <div className="glass-card p-4 text-center">
-                                        <div className="text-3xl mb-1">✅</div>
-                                        <div className="text-2xl font-bold text-amber-600">{completedCount}/{tasks.length}</div>
-                                        <div className="text-xs opacity-60">مهام منجزة</div>
-                                    </div>
-                                    <div className="glass-card p-4 text-center">
-                                        <div className="text-3xl mb-1">🏆</div>
-                                        <div className="text-base font-bold">{completionRate >= 70 ? 'ذهبي' : completionRate >= 40 ? 'فضي' : 'برونزي'}</div>
-                                        <div className="text-xs opacity-60">{completedCount * 500} XP</div>
-                                    </div>
-                                    <div className="glass-card p-4 text-center">
-                                        <div className="text-3xl mb-1">🔥</div>
-                                        <div className="text-2xl font-bold text-amber-600">{Math.max(1, Math.floor(completedCount * 3))}</div>
-                                        <div className="text-xs opacity-60">أيام متواصلة</div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div className="flex justify-between text-sm mb-1">
-                                        <span>تقدمك الرائع</span>
-                                        <span>{completionRate}%</span>
-                                    </div>
-                                    <div className="h-2 bg-white/20 rounded-full overflow-hidden">
-                                        <div className="h-full bg-gradient-to-r from-amber-500 to-rose-400 rounded-full transition-all duration-500" style={{width: `${completionRate}%`}}></div>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-
-                    </div>
-
-                    <ChatBot />
-
-                    {/* Footer */}
-                    <footer className="text-center py-6 opacity-50 text-sm border-t border-white/20 mt-8">
-                        <p>© 2026 <strong>MaWa Planner</strong> | صُنع بحب by <strong>Aya Gaber</strong></p>
-                    </footer>
-                </div>
+                </>
             );
         }
 
@@ -870,3 +786,5 @@
     </script>
 </body>
 </html>
+
+
