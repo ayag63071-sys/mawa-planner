@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -18,6 +17,10 @@
             --accent-blue: #7eb8c9;
             --accent-gold: #d4a853;
             --accent-rose: #e8c4b8;
+            --dark-bg: #121212;
+            --dark-surface: #1E1A16;
+            --dark-card: #2A241E;
+            --dark-border: #d4a85330;
         }
 
         * { font-family: 'Cairo', sans-serif; scroll-behavior: smooth; }
@@ -26,11 +29,11 @@
             margin: 0;
             overflow-x: hidden;
             background: #faf7f2;
-            transition: all 0.6s ease;
+            transition: background 0.4s ease, color 0.3s ease;
         }
 
         body.dark-mode {
-            background: #0f0d0a;
+            background: #0a0806;
         }
 
         /* خلفية منقوشة */
@@ -52,11 +55,11 @@
         }
 
         body.dark-mode .pattern-bg {
-            opacity: 0.3;
+            opacity: 0.5;
             background-image: 
-                radial-gradient(circle at 25% 25%, rgba(212,168,83,0.15) 1px, transparent 1px),
-                radial-gradient(circle at 75% 75%, rgba(240,215,140,0.12) 1px, transparent 1px),
-                radial-gradient(circle at 50% 50%, rgba(196,154,124,0.1) 1px, transparent 1px);
+                radial-gradient(circle at 25% 25%, rgba(212,168,83,0.2) 1px, transparent 1px),
+                radial-gradient(circle at 75% 75%, rgba(196,154,124,0.15) 1px, transparent 1px),
+                radial-gradient(circle at 50% 50%, rgba(255,215,140,0.12) 1px, transparent 1px);
         }
 
         @keyframes patternMove {
@@ -84,8 +87,8 @@
         }
 
         body.dark-mode .bubble {
-            background: radial-gradient(circle at 30% 30%, rgba(212,168,83,0.3), rgba(30,40,60,0.1));
-            box-shadow: 0 8px 30px rgba(212,168,83,0.15);
+            background: radial-gradient(circle at 30% 30%, rgba(212,168,83,0.25), rgba(100,80,50,0.15));
+            box-shadow: 0 8px 30px rgba(212,168,83,0.2);
         }
 
         @keyframes floatBubble {
@@ -95,7 +98,7 @@
             75% { transform: translateY(-50px) translateX(15px) scale(1.1); opacity: 0.65; }
         }
 
-        /* نجوم */
+        /* نجوم داكنة أكثر وضوحًا */
         .stars-layer {
             position: fixed;
             top: 0;
@@ -112,14 +115,15 @@
 
         .star {
             position: absolute;
-            background: white;
+            background: #fff3c9;
             border-radius: 50%;
             animation: twinkle 2.5s infinite alternate;
+            box-shadow: 0 0 6px rgba(255,215,0,0.6);
         }
 
         @keyframes twinkle {
-            0% { opacity: 0.2; transform: scale(0.7); box-shadow: 0 0 4px 1px rgba(255,255,255,0.3); }
-            100% { opacity: 1; transform: scale(1.5); box-shadow: 0 0 12px 3px rgba(255,255,255,0.8); }
+            0% { opacity: 0.2; transform: scale(0.7); box-shadow: 0 0 4px 1px rgba(255,215,140,0.3); }
+            100% { opacity: 1; transform: scale(1.5); box-shadow: 0 0 16px 4px rgba(255,215,0,0.8); }
         }
 
         /* شاشة ترحيبية */
@@ -170,31 +174,33 @@
             100% { transform: scale(1); opacity: 1; }
         }
 
-        /* زجاج */
+        /* زجاج - تحسين الوضع المظلم بشكل كبير */
         .glass-card {
-            background: rgba(255, 252, 248, 0.5);
+            background: rgba(255, 252, 248, 0.55);
             backdrop-filter: blur(22px);
             -webkit-backdrop-filter: blur(22px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.6);
             border-radius: 28px;
             box-shadow: 0 15px 45px rgba(160, 130, 100, 0.1), 0 0 0 1px rgba(255,255,255,0.2) inset;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         body.dark-mode .glass-card {
-            background: rgba(20, 16, 12, 0.6);
-            backdrop-filter: blur(22px);
-            border: 1px solid rgba(212, 168, 83, 0.2);
-            box-shadow: 0 15px 45px rgba(0,0,0,0.5), 0 0 0 1px rgba(212,168,83,0.08) inset;
+            background: rgba(25, 20, 16, 0.85);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(212, 168, 83, 0.45);
+            box-shadow: 0 20px 45px rgba(0,0,0,0.6), 0 0 0 1px rgba(212,168,83,0.15) inset;
         }
 
         .glass-card:hover {
             transform: translateY(-6px);
-            box-shadow: 0 25px 60px rgba(160, 130, 100, 0.2);
+            box-shadow: 0 25px 60px rgba(160, 130, 100, 0.25);
         }
 
         body.dark-mode .glass-card:hover {
-            box-shadow: 0 25px 60px rgba(212, 168, 83, 0.2);
+            transform: translateY(-6px);
+            box-shadow: 0 25px 55px rgba(212, 168, 83, 0.3);
+            background: rgba(35, 28, 22, 0.92);
         }
 
         /* أيقونات زجاجية */
@@ -202,9 +208,9 @@
             width: 55px;
             height: 55px;
             border-radius: 18px;
-            background: rgba(255,255,255,0.4);
+            background: rgba(255,255,255,0.45);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.6);
+            border: 1px solid rgba(255,255,255,0.65);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -212,22 +218,27 @@
             cursor: pointer;
             transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
             box-shadow: 0 8px 20px rgba(160,130,100,0.15);
+            color: #4a3a2a;
         }
 
         .glass-icon:hover {
             transform: translateY(-8px) rotate(-5deg) scale(1.12);
             box-shadow: 0 20px 40px rgba(160,130,100,0.3);
-            background: rgba(255,255,255,0.7);
+            background: rgba(255,255,255,0.75);
         }
 
         body.dark-mode .glass-icon {
-            background: rgba(30,25,20,0.5);
-            border: 1px solid rgba(212,168,83,0.3);
+            background: rgba(45, 38, 32, 0.7);
+            border: 1px solid rgba(212, 168, 83, 0.5);
+            color: #f0dbaa;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
         }
 
         body.dark-mode .glass-icon:hover {
-            background: rgba(40,35,28,0.7);
-            box-shadow: 0 20px 40px rgba(212,168,83,0.3);
+            background: rgba(80, 68, 56, 0.85);
+            border-color: rgba(212, 168, 83, 0.8);
+            color: #ffe4b5;
+            transform: translateY(-8px) rotate(-3deg) scale(1.08);
         }
 
         /* أيقونة البراند */
@@ -242,6 +253,11 @@
             font-size: 22px;
             animation: logoFloat 4s ease-in-out infinite;
             box-shadow: 0 8px 30px rgba(196,154,124,0.4);
+        }
+
+        body.dark-mode .brand-logo {
+            background: linear-gradient(135deg, #d4a853, #b8865a, #5a9cb0);
+            box-shadow: 0 8px 30px rgba(212,168,83,0.5);
         }
 
         @keyframes logoFloat {
@@ -264,11 +280,9 @@
         }
 
         body.dark-mode .brand-name {
-            background: linear-gradient(135deg, #d4a853, #f0d78c, #ffd700, #d4a853, #c49a7c);
+            background: linear-gradient(135deg, #f3d382, #e8c271, #ffde9e, #e8c271, #d4a853);
             background-size: 200% auto;
-            -webkit-background-clip: text;
-            background-clip: text;
-            filter: drop-shadow(0 0 30px rgba(255,215,0,0.8));
+            filter: drop-shadow(0 0 28px rgba(255,215,0,0.7));
         }
 
         @keyframes shimmer {
@@ -294,8 +308,13 @@
         }
 
         body.dark-mode .btn-glow {
-            background: linear-gradient(135deg, #d4a853, #b8943e);
-            box-shadow: 0 10px 30px rgba(212, 168, 83, 0.4);
+            background: linear-gradient(135deg, #e2b870, #c99f52);
+            box-shadow: 0 10px 30px rgba(212, 168, 83, 0.5);
+            color: #1a140e;
+        }
+
+        body.dark-mode .btn-glow:hover {
+            box-shadow: 0 20px 50px rgba(212, 168, 83, 0.7);
         }
 
         /* خط ذهبي لامع */
@@ -331,9 +350,22 @@
             justify-content: center;
         }
 
+        body.dark-mode .chat-brand-btn {
+            background: linear-gradient(135deg, #d4a853, #a07a58, #5f9eb0);
+            box-shadow: 0 12px 35px rgba(212,168,83,0.6);
+        }
+
         @keyframes chatPulse {
             0%, 100% { box-shadow: 0 12px 35px rgba(196,154,124,0.5); }
             50% { box-shadow: 0 12px 60px rgba(196,154,124,0.8), 0 0 80px rgba(212,168,83,0.4); }
+        }
+
+        body.dark-mode .chat-brand-btn {
+            animation: chatPulseDark 3s infinite;
+        }
+        @keyframes chatPulseDark {
+            0%, 100% { box-shadow: 0 12px 35px rgba(212,168,83,0.5); }
+            50% { box-shadow: 0 12px 60px rgba(212,168,83,0.9), 0 0 80px rgba(255,215,0,0.5); }
         }
 
         /* أيقونات التواصل المتحركة */
@@ -341,9 +373,9 @@
             width: 50px;
             height: 50px;
             border-radius: 16px;
-            background: rgba(255,255,255,0.35);
+            background: rgba(255,255,255,0.4);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.5);
+            border: 1px solid rgba(255,255,255,0.6);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -356,45 +388,56 @@
 
         .social-icon-animated:hover {
             transform: translateY(-10px) rotate(8deg) scale(1.2);
-            background: rgba(255,255,255,0.7);
-            box-shadow: 0 20px 40px rgba(160,130,100,0.35);
+            background: rgba(255,255,255,0.8);
+            box-shadow: 0 20px 40px rgba(160,130,100,0.4);
         }
 
         body.dark-mode .social-icon-animated {
-            background: rgba(30,25,20,0.5);
-            border: 1px solid rgba(212,168,83,0.3);
+            background: rgba(50, 42, 34, 0.75);
+            border: 1px solid rgba(212, 168, 83, 0.45);
+            color: #f0dbaa;
         }
 
         body.dark-mode .social-icon-animated:hover {
-            background: rgba(50,40,30,0.7);
-            box-shadow: 0 20px 40px rgba(212,168,83,0.35);
+            background: rgba(90, 74, 60, 0.85);
+            border-color: #d4a853;
+            box-shadow: 0 20px 40px rgba(212,168,83,0.4);
+            transform: translateY(-10px) rotate(6deg) scale(1.15);
         }
 
         input, select, textarea {
             padding: 14px 18px;
             border-radius: 18px;
             border: 2px solid rgba(180,160,140,0.3);
-            background: rgba(255,255,255,0.7);
+            background: rgba(255,255,255,0.8);
             font-family: 'Cairo', sans-serif;
             font-size: 15px;
             outline: none;
             transition: all 0.3s;
+            color: #2c241e;
         }
 
         input:focus, select:focus, textarea:focus {
             border-color: #c49a7c;
-            box-shadow: 0 0 0 4px rgba(196,154,124,0.15);
+            box-shadow: 0 0 0 4px rgba(196,154,124,0.2);
         }
 
         body.dark-mode input, body.dark-mode select, body.dark-mode textarea {
-            background: rgba(30,25,20,0.7);
-            border-color: rgba(180,150,120,0.3);
-            color: #f0e7dc;
+            background: rgba(38, 32, 28, 0.85);
+            border-color: rgba(212,168,83,0.4);
+            color: #f5ebda;
+        }
+
+        body.dark-mode input:focus, body.dark-mode select:focus, body.dark-mode textarea:focus {
+            border-color: #d4a853;
+            box-shadow: 0 0 0 4px rgba(212,168,83,0.25);
         }
 
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: rgba(220,210,200,0.3); border-radius: 10px; }
         ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #c49a7c, #7eb8c9); border-radius: 10px; }
+        body.dark-mode ::-webkit-scrollbar-track { background: rgba(80,70,60,0.3); }
+        body.dark-mode ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #d4a853, #c49a7c); }
 
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(30px); }
@@ -402,6 +445,67 @@
         }
 
         .animate-fade-up { animation: fadeInUp 0.6s ease forwards; }
+        
+        /* قفل المنتجات غير المتاحة */
+        .locked-overlay {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: rgba(0,0,0,0.65);
+            backdrop-filter: blur(6px);
+            padding: 5px 10px;
+            border-radius: 30px;
+            font-size: 12px;
+            color: #ffea9e;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            z-index: 2;
+            border: 1px solid rgba(255,215,0,0.4);
+        }
+        body.dark-mode .locked-overlay {
+            background: rgba(0,0,0,0.75);
+            color: #ffde9e;
+            border-color: rgba(255,215,0,0.6);
+        }
+        .product-card {
+            position: relative;
+            cursor: pointer;
+        }
+        .product-card.disabled {
+            cursor: default;
+            filter: grayscale(0.05);
+            opacity: 0.85;
+        }
+        .product-card.disabled:hover {
+            transform: translateY(0);
+        }
+        
+        /* تحسين النصوص في الوضع المظلم لضمان التباين والوضوح */
+        body.dark-mode, body.dark-mode .glass-card, body.dark-mode .glass-card * {
+            color: #f5efe5 !important;
+        }
+        body.dark-mode .glass-card div.locked-overlay span,
+        body.dark-mode .glass-card .locked-overlay i {
+            color: #ffea9e !important;
+        }
+        body.dark-mode .glass-card .btn-glow {
+            color: #1a140e !important;
+        }
+        body.dark-mode .glass-card .btn-glow * {
+            color: #1a140e !important;
+        }
+        body.dark-mode input, body.dark-mode input::placeholder {
+            color: #f5ebda !important;
+        }
+        body.dark-mode .brand-name {
+            -webkit-text-fill-color: transparent !important;
+            color: transparent !important;
+        }
+        body.dark-mode .golden-text {
+            -webkit-text-fill-color: transparent !important;
+        }
     </style>
 </head>
 <body>
@@ -444,9 +548,9 @@
 
             const reply = (msg) => {
                 const m = msg.toLowerCase();
-                if (m.includes('سعر') || m.includes('price')) return lang === 'ar' ? '💸 الأسعار تبدأ من 50 ج. تقدر تشوف التفاصيل في قسم البلانرز!' : '💸 Prices start from 50 EGP. Check planners section!';
-                if (m.includes('بلانر') || m.includes('planner')) return lang === 'ar' ? '📋 عندنا +30 بلانر لكل حاجة في حياتك!' : '📋 We have +30 planners for everything!';
-                if (m.includes('نوت') || m.includes('notebook')) return lang === 'ar' ? '📓 عندنا 9 أنواع نوت بوك مختلفة!' : '📓 We have 9 different notebook types!';
+                if (m.includes('سعر') || m.includes('price')) return lang === 'ar' ? '💸 البلانر اليومي متاح بسعر 50 ج. الباقي قريبًا 🔒' : '💸 Daily planner available for 50 EGP. Others coming soon 🔒';
+                if (m.includes('بلانر') || m.includes('planner')) return lang === 'ar' ? '📋 حالياً البلانر اليومي فقط متاح. الباقي 🔒 قريباً!' : '📋 Currently only Daily Planner available. Others 🔒 soon!';
+                if (m.includes('نوت') || m.includes('notebook')) return lang === 'ar' ? '📓 جميع النوت بوك قريباً 🔒' : '📓 All notebooks coming soon 🔒';
                 const replies = lang === 'ar' ? 
                     ['🌟 فكرة رائعة! تحب تعرف أكتر؟', '💡 أقدر أساعدك تختار الأنسب.', '✨ كل منتجاتنا بجودة عالية.'] :
                     ['🌟 Great idea! Want to know more?', '💡 I can help you choose.', '✨ All our products are high quality.'];
@@ -487,11 +591,11 @@
             );
         };
 
-        // ========== مودال تفاصيل المنتج ==========
+        // ========== مودال تفاصيل المنتج (للبلانر اليومي فقط) ==========
         const ProductModal = ({ product, onClose, lang }) => {
             if (!product) return null;
             return (
-                <div style={{position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(6px)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center'}} onClick={onClose}>
+                <div style={{position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(8px)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center'}} onClick={onClose}>
                     <div className="glass-card animate-fade-up" style={{padding: '28px', width: '90%', maxWidth: '480px'}} onClick={e => e.stopPropagation()}>
                         <div style={{textAlign: 'center', fontSize: '60px', marginBottom: '12px'}}>{product.icon}</div>
                         <h3 style={{textAlign: 'center', fontSize: '20px', fontWeight: 'bold', marginBottom: '6px'}}>{lang === 'ar' ? product.name : product.nameEn}</h3>
@@ -622,23 +726,23 @@
             useEffect(() => { document.body.classList.toggle('dark-mode', dark); }, [dark]);
 
             const planners = [
-                { name: 'يومي', nameEn: 'Daily', icon: '📋', desc: 'تخطيط يومي مفصل', descEn: 'Detailed daily planning', price: 50 },
-                { name: 'أسبوعي', nameEn: 'Weekly', icon: '📅', desc: 'رؤية أسبوعية شاملة', descEn: 'Comprehensive weekly view', price: 75 },
-                { name: 'شهري', nameEn: 'Monthly', icon: '🗓️', desc: 'أهداف الشهر', descEn: 'Monthly goals', price: 100 },
-                { name: 'فصل دراسي', nameEn: 'Semester', icon: '🎓', desc: 'خطة الترم', descEn: 'Semester plan', price: 90 },
-                { name: 'امتحانات', nameEn: 'Exams', icon: '📝', desc: 'جدول مذاكرة', descEn: 'Study schedule', price: 60 },
-                { name: 'أهداف', nameEn: 'Goals', icon: '🎯', desc: 'تتبع الأهداف', descEn: 'Goal tracking', price: 70 },
-                { name: 'عادات', nameEn: 'Habits', icon: '🔄', desc: 'بناء روتين', descEn: 'Build routines', price: 55 },
-                { name: 'قراءة', nameEn: 'Reading', icon: '📚', desc: 'قائمة كتب', descEn: 'Book list', price: 45 },
-                { name: 'لياقة', nameEn: 'Fitness', icon: '🏋️', desc: 'تمارين رياضية', descEn: 'Workout plan', price: 65 },
-                { name: 'ميزانية', nameEn: 'Budget', icon: '💰', desc: 'إدارة مالية', descEn: 'Financial management', price: 80 },
-                { name: 'مزاج', nameEn: 'Mood', icon: '🌈', desc: 'تتبع المشاعر', descEn: 'Mood tracking', price: 40 },
-                { name: 'وجبات', nameEn: 'Meals', icon: '🍽️', desc: 'تخطيط وجبات', descEn: 'Meal planning', price: 50 },
+                { id: 'daily', name: 'يومي', nameEn: 'Daily', icon: '📋', desc: 'تخطيط يومي مفصل', descEn: 'Detailed daily planning', price: 50, available: true },
+                { id: 'weekly', name: 'أسبوعي', nameEn: 'Weekly', icon: '📅', desc: 'رؤية أسبوعية شاملة', descEn: 'Comprehensive weekly view', price: 75, available: false },
+                { id: 'monthly', name: 'شهري', nameEn: 'Monthly', icon: '🗓️', desc: 'أهداف الشهر', descEn: 'Monthly goals', price: 100, available: false },
+                { id: 'semester', name: 'فصل دراسي', nameEn: 'Semester', icon: '🎓', desc: 'خطة الترم', descEn: 'Semester plan', price: 90, available: false },
+                { id: 'exams', name: 'امتحانات', nameEn: 'Exams', icon: '📝', desc: 'جدول مذاكرة', descEn: 'Study schedule', price: 60, available: false },
+                { id: 'goals', name: 'أهداف', nameEn: 'Goals', icon: '🎯', desc: 'تتبع الأهداف', descEn: 'Goal tracking', price: 70, available: false },
+                { id: 'habits', name: 'عادات', nameEn: 'Habits', icon: '🔄', desc: 'بناء روتين', descEn: 'Build routines', price: 55, available: false },
+                { id: 'reading', name: 'قراءة', nameEn: 'Reading', icon: '📚', desc: 'قائمة كتب', descEn: 'Book list', price: 45, available: false },
+                { id: 'fitness', name: 'لياقة', nameEn: 'Fitness', icon: '🏋️', desc: 'تمارين رياضية', descEn: 'Workout plan', price: 65, available: false },
+                { id: 'budget', name: 'ميزانية', nameEn: 'Budget', icon: '💰', desc: 'إدارة مالية', descEn: 'Financial management', price: 80, available: false },
+                { id: 'mood', name: 'مزاج', nameEn: 'Mood', icon: '🌈', desc: 'تتبع المشاعر', descEn: 'Mood tracking', price: 40, available: false },
+                { id: 'meals', name: 'وجبات', nameEn: 'Meals', icon: '🍽️', desc: 'تخطيط وجبات', descEn: 'Meal planning', price: 50, available: false },
             ];
 
             const content = {
                 homeTitle: lang === 'ar' ? '🌟 منظمك الشخصي المتكامل' : '🌟 Your All-in-One Planner',
-                homeSub: lang === 'ar' ? '+30 بلانر | +9 نوت بوك | مؤقت تركيز | تتبع ذكي' : '+30 Planners | +9 Notebooks | Focus Timer | Smart Tracking',
+                homeSub: lang === 'ar' ? '+30 بلانر | +8 نوت بوك | مؤقت تركيز | تتبع ذكي' : '+30 Planners | +8 Notebooks | Focus Timer | Smart Tracking',
                 startBtn: lang === 'ar' ? '🚀 ابدأ التخطيط الآن' : '🚀 Start Planning Now',
                 plannersTitle: lang === 'ar' ? '📋 كل أنواع البلانرز' : '📋 All Planner Types',
                 notebooksTitle: lang === 'ar' ? '📓 كل أنواع النوت بوك' : '📓 All Notebook Types',
@@ -646,16 +750,16 @@
                 trackerTitle: lang === 'ar' ? '📊 تتبع' : '📊 Tracker',
             };
 
+            // تم إزالة نوت الموسيقى (Music) بناءً على طلبك
             const notebooks = [
-                { name: lang === 'ar' ? 'منقط' : 'Dotted', icon: '🔵', desc: lang === 'ar' ? 'للرسم والتخطيط' : 'For sketching & planning' },
-                { name: lang === 'ar' ? 'مسطر' : 'Lined', icon: '📝', desc: lang === 'ar' ? 'للكتابة اليومية' : 'Daily writing' },
-                { name: lang === 'ar' ? 'مربعات' : 'Grid', icon: '📐', desc: lang === 'ar' ? 'للجداول' : 'For tables' },
-                { name: lang === 'ar' ? 'أبيض' : 'Blank', icon: '⬜', desc: lang === 'ar' ? 'للرسم الحر' : 'Free drawing' },
-                { name: lang === 'ar' ? 'أجندة' : 'Agenda', icon: '📒', desc: lang === 'ar' ? 'تقويم سنوي' : 'Yearly calendar' },
-                { name: lang === 'ar' ? 'سكيتش' : 'Sketch', icon: '🎨', desc: lang === 'ar' ? 'للإبداع' : 'For creativity' },
-                { name: lang === 'ar' ? 'موسيقى' : 'Music', icon: '🎵', desc: lang === 'ar' ? 'للنوت الموسيقية' : 'Music sheets' },
-                { name: lang === 'ar' ? 'وصفات' : 'Recipes', icon: '👨‍🍳', desc: lang === 'ar' ? 'لجمع الوصفات' : 'Recipe collection' },
-                { name: lang === 'ar' ? 'يوميات' : 'Diary', icon: '📔', desc: lang === 'ar' ? 'للكتابة الشخصية' : 'Personal journal' },
+                { name: lang === 'ar' ? 'منقط' : 'Dotted', icon: '🔵', desc: lang === 'ar' ? 'للرسم والتخطيط' : 'For sketching & planning', available: false },
+                { name: lang === 'ar' ? 'مسطر' : 'Lined', icon: '📝', desc: lang === 'ar' ? 'للكتابة اليومية' : 'Daily writing', available: false },
+                { name: lang === 'ar' ? 'مربعات' : 'Grid', icon: '📐', desc: lang === 'ar' ? 'للجداول' : 'For tables', available: false },
+                { name: lang === 'ar' ? 'أبيض' : 'Blank', icon: '⬜', desc: lang === 'ar' ? 'للرسم الحر' : 'Free drawing', available: false },
+                { name: lang === 'ar' ? 'أجندة' : 'Agenda', icon: '📒', desc: lang === 'ar' ? 'تقويم سنوي' : 'Yearly calendar', available: false },
+                { name: lang === 'ar' ? 'سكيتش' : 'Sketch', icon: '🎨', desc: lang === 'ar' ? 'للإبداع' : 'For creativity', available: false },
+                { name: lang === 'ar' ? 'وصفات' : 'Recipes', icon: '👨‍🍳', desc: lang === 'ar' ? 'لجمع الوصفات' : 'Recipe collection', available: false },
+                { name: lang === 'ar' ? 'يوميات' : 'Diary', icon: '📔', desc: lang === 'ar' ? 'للكتابة الشخصية' : 'Personal journal', available: false },
             ];
 
             const tabs = [
@@ -665,6 +769,49 @@
                 { id: 'pomodoro', name: lang === 'ar' ? '🍅 بومودورو' : '🍅 Pomodoro' },
                 { id: 'tracker', name: lang === 'ar' ? '📊 التتبع' : '📊 Tracker' },
             ];
+
+            // رسالة تنبيه من البراند MaWa بدلاً من alert عادي
+            const showBrandAlert = (message) => {
+                // نافذة منبثقة مخصصة بنمط البراند
+                const brandDiv = document.createElement('div');
+                brandDiv.style.position = 'fixed';
+                brandDiv.style.top = '20px';
+                brandDiv.style.left = '50%';
+                brandDiv.style.transform = 'translateX(-50%)';
+                brandDiv.style.zIndex = '10000';
+                brandDiv.style.backgroundColor = dark ? 'rgba(35,28,22,0.95)' : 'rgba(255,252,248,0.95)';
+                brandDiv.style.backdropFilter = 'blur(16px)';
+                brandDiv.style.border = `1px solid ${dark ? '#d4a853' : '#c49a7c'}`;
+                brandDiv.style.borderRadius = '28px';
+                brandDiv.style.padding = '14px 28px';
+                brandDiv.style.boxShadow = '0 20px 40px rgba(0,0,0,0.2)';
+                brandDiv.style.fontFamily = 'Cairo, sans-serif';
+                brandDiv.style.fontWeight = '600';
+                brandDiv.style.color = dark ? '#f0e6d8' : '#4a3a2a';
+                brandDiv.style.fontSize = '14px';
+                brandDiv.style.display = 'flex';
+                brandDiv.style.alignItems = 'center';
+                brandDiv.style.gap = '12px';
+                brandDiv.style.direction = 'rtl';
+                brandDiv.innerHTML = `<i class="fas fa-lock" style="color: #d4a853; font-size: 18px;"></i><span>${message}</span>`;
+                document.body.appendChild(brandDiv);
+                setTimeout(() => {
+                    brandDiv.style.opacity = '0';
+                    brandDiv.style.transition = 'opacity 0.5s';
+                    setTimeout(() => brandDiv.remove(), 600);
+                }, 2800);
+            };
+
+            const handleProductClick = (product, isAvailable) => {
+                if (isAvailable) {
+                    setSelected(product);
+                } else {
+                    const msg = lang === 'ar' 
+                        ? '🔒 هذا المنتج غير متوفر حالياً في متجر MaWa، سيتم إتاحته قريباً جداً! ✨' 
+                        : '🔒 This product is currently unavailable at MaWa store, coming very soon! ✨';
+                    showBrandAlert(msg);
+                }
+            };
 
             return (
                 <>
@@ -678,7 +825,7 @@
                             ))}
                         </div>
                         <div className="stars-layer">
-                            {Array.from({length: 50}, (_, i) => (
+                            {Array.from({length: 55}, (_, i) => (
                                 <div key={i} className="star" style={{width: (Math.random()*3+2)+'px', height: (Math.random()*3+2)+'px', left: (Math.random()*100)+'%', top: (Math.random()*100)+'%', animationDelay: (Math.random()*3)+'s'}} />
                             ))}
                         </div>
@@ -692,7 +839,7 @@
                                 </div>
                                 <div style={{display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap'}}>
                                     <button onClick={() => setLang(lang === 'ar' ? 'en' : 'ar')} style={{width: '38px', height: '38px', borderRadius: '12px', border: 'none', background: 'rgba(255,255,255,0.4)', cursor: 'pointer', fontSize: '18px'}} title={lang === 'ar' ? 'English' : 'العربية'}>🌐</button>
-                                    <button onClick={() => setDark(!dark)} style={{width: '38px', height: '38px', borderRadius: '12px', border: 'none', background: dark ? '#d4a853' : '#7eb8c9', color: 'white', cursor: 'pointer', fontSize: '18px'}}>{dark ? '☀️' : '🌙'}</button>
+                                    <button onClick={() => setDark(!dark)} style={{width: '38px', height: '38px', borderRadius: '12px', border: 'none', background: dark ? '#d4a853' : '#7eb8c9', color: dark ? '#1a140e' : 'white', cursor: 'pointer', fontSize: '18px'}}>{dark ? '☀️' : '🌙'}</button>
                                 </div>
                             </div>
                         </header>
@@ -700,7 +847,7 @@
                         {/* التنقل */}
                         <div style={{display: 'flex', gap: '6px', padding: '0 14px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '16px'}}>
                             {tabs.map(t => (
-                                <div key={t.id} onClick={() => setTab(t.id)} className="glass-icon" style={{padding: '12px 18px', borderRadius: '18px', cursor: 'pointer', fontWeight: tab === t.id ? 'bold' : 'normal', background: tab === t.id ? 'rgba(196,154,124,0.25)' : 'rgba(255,255,255,0.3)', fontSize: '13px', width: 'auto', height: 'auto'}}>
+                                <div key={t.id} onClick={() => setTab(t.id)} className="glass-icon" style={{padding: '12px 18px', borderRadius: '18px', cursor: 'pointer', fontWeight: tab === t.id ? 'bold' : 'normal', background: tab === t.id ? 'rgba(196,154,124,0.35)' : 'rgba(255,255,255,0.3)', fontSize: '13px', width: 'auto', height: 'auto'}}>
                                     {t.name}
                                 </div>
                             ))}
@@ -716,7 +863,7 @@
                                         <button onClick={() => setTab('planners')} className="btn-glow" style={{fontSize: '17px', padding: '16px 36px'}}>{content.startBtn}</button>
                                     </div>
                                     <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '12px'}}>
-                                        {[{title: lang === 'ar' ? '+30 بلانر' : '+30 Planners', icon: '📋'}, {title: lang === 'ar' ? '+9 نوت بوك' : '+9 Notebooks', icon: '📓'}, {title: lang === 'ar' ? 'بومودورو' : 'Pomodoro', icon: '🍅'}, {title: lang === 'ar' ? 'تتبع' : 'Tracker', icon: '📊'}].map((f, i) => (
+                                        {[{title: lang === 'ar' ? '+30 بلانر' : '+30 Planners', icon: '📋'}, {title: lang === 'ar' ? '+8 نوت بوك' : '+8 Notebooks', icon: '📓'}, {title: lang === 'ar' ? 'بومودورو' : 'Pomodoro', icon: '🍅'}, {title: lang === 'ar' ? 'تتبع' : 'Tracker', icon: '📊'}].map((f, i) => (
                                             <div key={i} className="glass-card" style={{padding: '22px', textAlign: 'center', cursor: 'pointer'}} onClick={() => setTab(['planners','notebooks','pomodoro','tracker'][i])}>
                                                 <div style={{fontSize: '40px', marginBottom: '8px'}}>{f.icon}</div>
                                                 <h4 style={{fontWeight: 'bold', fontSize: '14px'}}>{f.title}</h4>
@@ -731,7 +878,12 @@
                                     <h2 className="section-title" style={{textAlign: 'center', fontSize: '24px', marginBottom: '16px', background: 'linear-gradient(135deg, #c49a7c, #7eb8c9)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'}}>{content.plannersTitle}</h2>
                                     <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '12px'}}>
                                         {planners.map((p, i) => (
-                                            <div key={i} className="glass-card" style={{padding: '18px 14px', textAlign: 'center', cursor: 'pointer'}} onClick={() => setSelected(p)}>
+                                            <div key={i} className={`glass-card product-card ${!p.available ? 'disabled' : ''}`} style={{padding: '18px 14px', textAlign: 'center', position: 'relative'}} onClick={() => handleProductClick(p, p.available)}>
+                                                {!p.available && (
+                                                    <div className="locked-overlay">
+                                                        <i className="fas fa-lock"></i> <span>{lang === 'ar' ? 'قريباً' : 'Soon'}</span>
+                                                    </div>
+                                                )}
                                                 <div style={{fontSize: '36px', marginBottom: '6px'}}>{p.icon}</div>
                                                 <div style={{fontWeight: 'bold', fontSize: '13px'}}>{lang === 'ar' ? p.name : p.nameEn}</div>
                                                 <div style={{fontSize: '11px', opacity: 0.6, marginTop: '4px'}}>{lang === 'ar' ? p.desc : p.descEn}</div>
@@ -747,7 +899,10 @@
                                     <h2 className="section-title" style={{textAlign: 'center', fontSize: '24px', marginBottom: '16px', background: 'linear-gradient(135deg, #7eb8c9, #d4a853)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'}}>{content.notebooksTitle}</h2>
                                     <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '12px'}}>
                                         {notebooks.map((n, i) => (
-                                            <div key={i} className="glass-card" style={{padding: '18px 14px', textAlign: 'center'}}>
+                                            <div key={i} className="glass-card product-card disabled" style={{padding: '18px 14px', textAlign: 'center', position: 'relative', cursor: 'pointer'}} onClick={() => handleProductClick(null, false)}>
+                                                <div className="locked-overlay">
+                                                    <i className="fas fa-lock"></i> <span>{lang === 'ar' ? 'قريباً' : 'Soon'}</span>
+                                                </div>
                                                 <div style={{fontSize: '36px', marginBottom: '6px'}}>{n.icon}</div>
                                                 <div style={{fontWeight: 'bold', fontSize: '13px'}}>{n.name}</div>
                                                 <div style={{fontSize: '11px', opacity: 0.6, marginTop: '4px'}}>{n.desc}</div>
@@ -786,5 +941,3 @@
     </script>
 </body>
 </html>
-
-
